@@ -1,0 +1,52 @@
+.photo-frame {
+  position: relative;
+  margin: 0;
+  padding: var(--photo-frame-padding);
+  border-radius: var(--photo-frame-radius);
+  background: var(--photo-frame-bg);
+}
+
+.photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--photo-aspect);
+  overflow: hidden;
+  border-radius: var(--photo-radius);
+  box-shadow: var(--photo-shadow);
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--photo-grade);
+}
+
+.photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--photo-tint);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.photo-rings {
+  display: var(--photo-rings);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: var(--photo-ring-color);
+}
+
+.photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--photo-placeholder);
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}

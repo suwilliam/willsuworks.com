@@ -1,0 +1,217 @@
+/* The hidden SoundCloud widget. */
+.player-embed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Now-playing bar: dark leather strip fixed to the bottom of the screen. */
+:root {
+  --now-playing-height: 68px;
+}
+
+.now-playing-spacer {
+  height: calc(var(--now-playing-height) + env(safe-area-inset-bottom, 0px));
+}
+
+.now-playing {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  animation: now-playing-in 250ms ease-out;
+}
+
+@keyframes now-playing-in {
+  from {
+    translate: 0 100%;
+  }
+}
+
+.now-playing-inner {
+  height: var(--now-playing-height);
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.now-playing-toggle,
+.now-playing-close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.now-playing-toggle {
+  width: 44px;
+  height: 44px;
+  background: var(--color-button-active-bg);
+  color: var(--color-button-active-text);
+}
+
+.now-playing-close {
+  width: 36px;
+  height: 36px;
+  background: none;
+  color: inherit;
+  opacity: 0.7;
+}
+
+.now-playing-close:hover {
+  opacity: 1;
+}
+
+.now-playing-track {
+  flex: 0 1 280px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.now-playing-record {
+  flex: none;
+  display: inline-flex;
+}
+
+.now-playing-track.is-playing .now-playing-record {
+  animation: now-playing-spin 3s linear infinite;
+}
+
+@keyframes now-playing-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.now-playing-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.now-playing-title,
+.now-playing-artist {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.now-playing-title {
+  color: inherit;
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-variation);
+  text-decoration: none;
+}
+
+.now-playing-title:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.now-playing-artist {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.now-playing-progress {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.now-playing-time {
+  flex: none;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+
+/* Seek slider: a thin line that fills in cognac as the track plays. */
+.now-playing-progress input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.now-playing-progress input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--color-button-active-bg) var(--progress),
+    rgba(239, 229, 210, 0.25) var(--progress)
+  );
+}
+
+.now-playing-progress input[type='range']::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(239, 229, 210, 0.25);
+}
+
+.now-playing-progress input[type='range']::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-button-active-bg);
+}
+
+.now-playing-progress input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--color-button-text);
+}
+
+.now-playing-progress input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-button-text);
+}
+
+.now-playing-progress input[type='range']:disabled {
+  cursor: default;
+}
+
+/* Phones: drop the times and the record icon to make room. */
+@media (max-width: 600px) {
+  .now-playing-time,
+  .now-playing-record {
+    display: none;
+  }
+
+  .now-playing-track {
+    flex-basis: 140px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .now-playing,
+  .now-playing-track.is-playing .now-playing-record {
+    animation: none;
+  }
+}

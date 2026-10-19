@@ -1,0 +1,140 @@
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xl);
+  padding-block: 40px 96px;
+}
+
+.hero-text {
+  flex: 999 1 420px;
+  min-width: 0;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.hero-text h1 {
+  font-size: var(--text-h1);
+}
+
+.hero-photo {
+  flex: 1 1 300px;
+  max-width: var(--hero-photo-max, 400px);
+  order: var(--hero-photo-order);
+}
+
+/* On narrow screens the photo always comes first. */
+@media (max-width: 760px) {
+  .hero {
+    gap: var(--space-l);
+  }
+
+  .hero-photo {
+    order: -1;
+  }
+}
+
+/* Playable photo: the whole photo is a play button. The disc appears on
+   hover or keyboard focus (and stays visible on touch screens). */
+.hero-photo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.photo-stage {
+  position: relative;
+  width: 100%;
+}
+
+.track-toggle {
+  position: absolute;
+  inset: var(--photo-frame-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.track-toggle:disabled {
+  cursor: default;
+}
+
+.track-toggle-disc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  opacity: 0;
+  scale: 0.85;
+  transition:
+    opacity 200ms ease,
+    scale 200ms ease,
+    background-color 150ms ease;
+}
+
+.photo-stage:hover .track-toggle:not(:disabled) .track-toggle-disc,
+.track-toggle:focus-visible .track-toggle-disc {
+  opacity: 1;
+  scale: 1;
+}
+
+.track-toggle:hover .track-toggle-disc {
+  background: var(--color-button-active-bg);
+  color: var(--color-button-active-text);
+}
+
+.track-toggle:focus-visible {
+  outline-offset: 6px;
+}
+
+@media (hover: none) {
+  .track-toggle:not(:disabled) .track-toggle-disc {
+    opacity: 0.9;
+    scale: 0.8;
+  }
+}
+
+.track-caption {
+  font-size: var(--text-small);
+  color: var(--color-text-subtle);
+  text-align: center;
+}
+
+.track-caption-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* While the track plays, the ripple rings turn like a record. */
+.is-playing .photo-rings {
+  animation: rings-spin 24s linear infinite;
+}
+
+@keyframes rings-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-playing .photo-rings {
+    animation: none;
+  }
+}

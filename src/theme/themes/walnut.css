@@ -1,0 +1,41 @@
+/* Walnut: dark 70s modern. Espresso ground, cognac leather buttons and
+   the photo set in a walnut panel with a brass line. */
+[data-theme='walnut'] {
+  --color-bg: #231710;
+  --color-surface: #2f2016;
+  --color-text: #efe5d2;
+  --color-text-muted: #d8cab3;
+  --color-text-subtle: #cbb9a0;
+  --color-accent: #d9945a;
+  --color-accent-hover: #f0b47e;
+  --color-line: #4a3324;
+
+  --color-button-bg: #7a3f1d;
+  --color-button-text: #f6ead6;
+  --color-button-active-bg: #c27a3e;
+  --color-button-active-text: #231710;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Jost', system-ui, sans-serif;
+  --display-variation: 'SOFT' 100, 'opsz' 144;
+  --display-weight: 500;
+
+  --decor-strip: none;
+  --decor-strip-height: 0px;
+
+  --photo-placeholder: #3a2618;
+  --photo-aspect: 4 / 5;
+  --photo-radius: 3px;
+  --photo-rings: none;
+  --photo-ring-color: var(--color-accent);
+  --photo-shadow: inset 0 0 0 1px #c9a46a;
+  --photo-frame-bg: var(--wood-grain);
+  --photo-frame-padding: 24px;
+  --photo-frame-radius: 6px;
+  --hero-photo-order: -1;
+
+  --card-radius: 6px;
+  --button-radius: 999px;
+
+  color-scheme: dark;
+}

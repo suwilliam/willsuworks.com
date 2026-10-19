@@ -1,0 +1,45 @@
+/* Cream Rug: light 70s modern. Cream wool ground, chocolate text,
+   black leather buttons, cognac links and a walnut strip up top. */
+[data-theme='cream-rug'] {
+  --color-bg: #ece3d0;
+  --color-surface: #e3d7bf;
+  --color-text: #2a1a10;
+  --color-text-muted: #4d3626;
+  --color-text-subtle: #5c4532;
+  --color-accent: #8a4a22;
+  --color-accent-hover: #5c2f14;
+  --color-line: #cdbd9f;
+
+  --color-button-bg: #1c1712;
+  --color-button-text: #efe5d2;
+  --color-button-active-bg: #8a4a22;
+  --color-button-active-text: #f6ead6;
+
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-body: 'Jost', system-ui, sans-serif;
+  --display-variation: normal;
+  --display-weight: 400;
+
+  --decor-strip: var(--wood-grain);
+  --decor-strip-height: 14px;
+
+  --photo-placeholder: #c9a77f;
+  /* 1 with a 50% radius makes a circle. */
+  --photo-aspect: 1;
+  --photo-radius: 50%;
+  --photo-shadow: none;
+  /* Ripple rings around the photo. The padding is the ring band's width and
+     must match RING_BAND in src/components/Photo.tsx. */
+  --photo-rings: block;
+  --photo-ring-color: var(--color-accent);
+  --photo-frame-bg: none;
+  --photo-frame-padding: 11%;
+  /* Wider than the 400px default so the rings don't shrink the photo itself. */
+  --hero-photo-max: 440px;
+  --photo-frame-radius: 0px;
+  /* 1 puts the photo after the intro (right side); -1 puts it first. */
+  --hero-photo-order: 1;
+
+  --card-radius: 24px;
+  --button-radius: 999px;
+}
