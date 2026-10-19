@@ -14,6 +14,8 @@ import './Layout.css'
 export default function Layout() {
   const scrolled = useScrolled()
   usePageChange()
+  const { pathname } = useLocation()
+  const direction = useSlideDirection(pathname)
 
   return (
     <PlayerProvider track={site.home.track}>
@@ -54,7 +56,10 @@ export default function Layout() {
         </div>
 
         <main className="site-main">
-          <Outlet />
+          {/* Keyed by page, so each new page remounts and plays its slide-in. */}
+          <div key={pathname} className="page-transition" data-direction={direction}>
+            <Outlet />
+          </div>
         </main>
 
         {/* Holds the dock's place at the end of the page; the dock itself is fixed. */}
@@ -127,6 +132,26 @@ function usePageChange() {
     const label = page ? page.navLabel : 'Not found'
     document.title = label ? `${label} · William Su` : 'William Su'
   }, [pathname])
+}
+
+// Which side the new page's content slides in from: the right when moving
+// further along the menu (Home first), the left when moving back. Nothing on
+// the first load. Uses React's "adjust state while rendering" pattern, so the
+// direction is ready on the same render as the new page.
+function useSlideDirection(pathname: string) {
+  const [state, setState] = useState<{ path: string; direction?: 'left' | 'right' }>({
+    path: pathname,
+  })
+
+  if (state.path !== pathname) {
+    const order = (path: string) => {
+      const index = pages.findIndex((p) => p.path === path)
+      return index === -1 ? pages.length : index
+    }
+    setState({ path: pathname, direction: order(pathname) > order(state.path) ? 'right' : 'left' })
+  }
+
+  return state.direction
 }
 
 // True once the page has scrolled past the top, so the sticky header can show its divider.
