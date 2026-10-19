@@ -15,13 +15,13 @@
   --color-button-active-bg: #8a4a22;
   --color-button-active-text: #f6ead6;
 
-  --font-display: 'Young Serif', Georgia, serif;
-  --font-body: 'Jost', system-ui, sans-serif;
+  --font-display: 'Shrikhand', 'Cooper Black', Georgia, serif;
+  --font-body: 'Fraunces', Georgia, serif;
   --display-variation: normal;
   --display-weight: 400;
 
   --decor-strip: var(--wood-grain);
-  --decor-strip-height: 14px;
+  --decor-strip-height: 22px;
 
   --photo-placeholder: #c9a77f;
   /* 1 with a 50% radius makes a circle. */

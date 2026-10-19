@@ -1,6 +1,6 @@
 # Personal website
 
-A small React site with pages: Home, Work, Portfolio, Music, Interests and Contact.
+A small React site with pages: Home, Tech Experience, Portfolio, Music and Contact.
 Built with Vite, React, TypeScript and React Router.
 
 ## Run it
@@ -16,7 +16,7 @@ npm run preview  # serve the production build locally
 
 | To change…                 | Edit                                         |
 | -------------------------- | -------------------------------------------- |
-| Any text, links, jobs, tracks, interests | `src/content/site.ts`          |
+| Any text, links, jobs, projects, tracks | `src/content/site.ts`          |
 | Your photo                 | `public/images/profile.jpg`, referenced by `home.photo` in `src/content/site.ts`. `position` controls the crop. |
 | Your resume                | `public/William_Su_Resume.pdf`, referenced by `work.resumeUrl` |
 | Which pages exist / menu order | `src/pages/index.ts`                      |

@@ -1,4 +1,4 @@
-/* Shared styles for the inner pages (Work, Music, Interests). */
+/* Shared styles for the inner pages (Tech Experience, Portfolio, Music, Contact). */
 .page {
   display: flex;
   flex-direction: column;
@@ -12,6 +12,20 @@
   flex-direction: column;
   gap: var(--space-s);
   max-width: 620px;
+}
+
+.page-header > .button {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* A row of buttons under a page's intro, e.g. resume plus social links. */
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .page-header h1:not(.eyebrow) {
@@ -43,15 +57,70 @@
   padding-top: 4px;
 }
 
+/* Job titles use the body font in semibold; the display font is saved for
+   the big page heading. */
 .timeline-title {
+  font-family: var(--font-body);
   font-size: var(--text-lead);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: var(--color-accent);
 }
 
 .timeline-org {
   margin: 4px 0 var(--space-xs);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
   color: var(--color-accent);
-  font-size: var(--text-body);
+  font-size: 17px;
   font-weight: 500;
+}
+
+.timeline-org-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-org-separator {
+  opacity: 0.6;
+}
+
+.timeline-org-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.timeline-org-link:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.timeline-logo {
+  flex: none;
+  display: block;
+  /* Each logo file is cropped tight to its symbol and used as a mask, so
+     every logo is the same height and the same color as the name, sits flush
+     with the left edge, and is followed by the same gap. */
+  background-color: currentColor;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.timeline-logo img {
+  display: block;
+  width: auto;
+  height: 0.85em;
+  opacity: 0;
 }
 
 @media (max-width: 560px) {
@@ -113,7 +182,7 @@
   font-size: var(--text-small);
 }
 
-/* Interests */
+/* Cards (used by Portfolio) */
 .cards {
   list-style: none;
   margin: 0;

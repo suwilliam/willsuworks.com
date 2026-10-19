@@ -56,33 +56,208 @@
   padding: 0;
 }
 
+.nav-label {
+  display: none;
+}
+
+/* Phones have no hover, so each menu icon gets its name written underneath. */
+@media (max-width: 600px) {
+  .site-nav {
+    gap: 16px;
+  }
+
+  .nav-icon-button {
+    margin-bottom: 18px;
+  }
+
+  .nav-label {
+    display: block;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    translate: -50% 0;
+    color: var(--color-text-subtle);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    text-transform: none;
+    white-space: nowrap;
+  }
+
+  .nav-icon-button.active .nav-label {
+    color: var(--color-accent);
+  }
+
+  /* The labels replace the tooltips here. */
+  .nav-icon-button[data-tooltip]::before,
+  .nav-icon-button[data-tooltip]::after {
+    display: none;
+  }
+}
+
 .site-main {
   flex: 1;
 }
 
+.site {
+  /* Heights shared by the dock and its spacer. */
+  --footer-height: 48px;
+  --dock-bar-height: 0px;
+}
+
+/* While a song plays, the plank slims back down to the plain wood strip,
+   the now-playing bar sits under it, and the plank's links move into the bar. */
+.site:has(.now-playing:not(.is-closing)) {
+  --footer-height: var(--decor-strip-height);
+  --dock-bar-height: calc(var(--now-playing-height) + env(safe-area-inset-bottom, 0px));
+}
+
+.site-dock-spacer {
+  height: calc(var(--footer-height) + var(--dock-bar-height));
+  transition: height 250ms ease-out;
+}
+
+/* Fixed to the bottom of the screen: the wooden footer, with the now-playing
+   bar stacked under it while a song plays. The bar slides by moving the whole
+   dock, so the footer rides on top of it with no gap. */
+.site-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+.site-dock:has(.now-playing) {
+  animation: dock-in 250ms ease-out;
+}
+
+.site-dock:has(.now-playing.is-closing) {
+  animation: dock-out 220ms ease-in forwards;
+}
+
+@keyframes dock-in {
+  from {
+    translate: 0 calc(var(--now-playing-height) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes dock-out {
+  to {
+    translate: 0 calc(var(--now-playing-height) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* A walnut plank with the links set into it. */
 .site-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: var(--space-s);
-  padding-block: var(--space-m) var(--space-l);
-  border-top: 1px solid var(--color-line);
-  font-size: var(--text-small);
-  color: var(--color-text-subtle);
+  height: var(--footer-height);
+  overflow: hidden;
+  background: var(--wood-grain);
+  box-shadow:
+    inset 0 2px 0 rgba(0, 0, 0, 0.25),
+    0 -1px 0 rgba(42, 26, 16, 0.2);
+  transition: height 250ms ease-out;
+}
+
+/* Closing uses the bar's slide-out timing (220ms, ease-in). */
+.site:has(.now-playing.is-closing) .site-footer,
+.site:has(.now-playing.is-closing) .site-dock-spacer {
+  transition: height 220ms ease-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-dock:has(.now-playing),
+  .site-dock:has(.now-playing.is-closing) {
+    animation: none;
+  }
 }
 
 .site-footer-links {
+  height: var(--footer-height);
+  min-height: 48px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   gap: var(--space-m);
+  transition:
+    opacity 200ms ease,
+    translate 250ms ease-in;
+}
+
+.site:has(.now-playing:not(.is-closing)) .site-footer-links {
+  opacity: 0;
+  translate: 0 24px;
+  /* Hidden once the slide ends, so keyboard focus skips the tucked-away links. */
+  visibility: hidden;
+  transition:
+    opacity 200ms ease,
+    translate 250ms ease-in,
+    visibility 0s 250ms;
+}
+
+.site-footer-socials {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  margin-left: auto;
+}
+
+/* Play button: a cognac circle and the track title, set into the wood. */
+.site-footer-play {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #f3e7d3;
+  cursor: pointer;
+  font-size: var(--text-small);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.site-footer-play-icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-button-active-bg);
+  color: var(--color-button-active-text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: background-color 150ms ease;
+}
+
+.site-footer-play:hover .site-footer-play-icon {
+  background: var(--color-accent-hover);
+}
+
+.site-footer-play-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.site-footer-play:hover .site-footer-play-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .site-footer-links a {
   display: inline-flex;
-  color: var(--color-text-subtle);
+  color: #f3e7d3;
+  opacity: 0.9;
+  /* A faint dark edge so the cream reads as set into the wood. */
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+  transition:
+    color 150ms ease,
+    opacity 150ms ease;
 }
 
 .site-footer-links a:hover {
-  color: var(--color-accent);
+  color: #ffd7a8;
+  opacity: 1;
 }

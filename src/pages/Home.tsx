@@ -17,7 +17,7 @@ export default function Home() {
     <section className="hero container">
       <div className="hero-text">
         {greeting && <div className="eyebrow">{greeting}</div>}
-        <h1>I'm {site.name}.</h1>
+        <h1>I'm {site.name}</h1>
         {intro.map((paragraph) => (
           <p key={paragraph} className="muted">
             {paragraph}
@@ -34,8 +34,10 @@ export default function Home() {
 }
 
 // The profile photo doubles as a record: hover (or tap) to reveal a play
-// button, and the ripple rings turn while the track plays. Playback runs in
-// the site-wide player, so it carries on in the bottom bar on other pages.
+// button. While the track plays, vinyl grooves close in around the photo,
+// which spins as the record's label, and the ripple rings turn; on pause it
+// goes back to a plain photo. Playback runs in the
+// site-wide player, so it carries on in the bottom bar on other pages.
 function PlayablePhoto({ player, children }: { player: Player; children: ReactNode }) {
   const { track, ready, playing, toggle } = player
   const name = `${track.title} by ${track.artist}`
@@ -44,6 +46,8 @@ function PlayablePhoto({ player, children }: { player: Player; children: ReactNo
     <div className={`hero-photo${playing ? ' is-playing' : ''}`}>
       <div className="photo-stage">
         {children}
+        <span className="record-vinyl" aria-hidden="true" />
+        <span className="record-spindle" aria-hidden="true" />
         <button
           type="button"
           className="track-toggle"

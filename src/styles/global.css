@@ -119,3 +119,61 @@ p {
     transition: none !important;
   }
 }
+
+/* Tooltip: add data-tooltip="Name" to a link or button and the name pops up
+   just below it on hover or keyboard focus. */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::before,
+[data-tooltip]::after {
+  position: absolute;
+  left: 50%;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% -4px;
+  transition:
+    opacity 150ms ease,
+    translate 150ms ease;
+}
+
+/* The little arrow pointing up at the icon */
+[data-tooltip]::before {
+  content: '';
+  top: calc(100% + 2px);
+  border: 5px solid transparent;
+  border-bottom-color: var(--color-button-bg);
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  top: calc(100% + 12px);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+[data-tooltip]:focus-visible::before,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* Only on devices with a real hover, so taps on phones don't leave it stuck open. */
+@media (hover: hover) {
+  [data-tooltip]:hover::before,
+  [data-tooltip]:hover::after {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}

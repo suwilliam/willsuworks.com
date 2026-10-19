@@ -4,7 +4,6 @@ import Home from './Home'
 import Work from './Work'
 import Portfolio from './Portfolio'
 import Music from './Music'
-import Interests from './Interests'
 import Contact from './Contact'
 
 export type Page = {
@@ -23,6 +22,5 @@ export const pages: Page[] = [
   { path: '/tech', navLabel: 'Tech', navIcon: 'work', Component: Work },
   { path: '/portfolio', navLabel: 'Portfolio', navIcon: 'portfolio', Component: Portfolio },
   { path: '/music', navLabel: 'Music', navIcon: 'music', Component: Music },
-  { path: '/interests', navLabel: 'Interests', navIcon: 'interests', Component: Interests },
   { path: '/contact', navLabel: 'Contact', navIcon: 'contact', Component: Contact },
 ]

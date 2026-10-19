@@ -17,6 +17,7 @@
 
 .hero-text h1 {
   font-size: var(--text-h1);
+  text-align: right;
 }
 
 .hero-photo {
@@ -122,9 +123,14 @@
   color: var(--color-accent);
 }
 
-/* While the track plays, the ripple rings turn like a record. */
-.is-playing .photo-rings {
-  animation: rings-spin 24s linear infinite;
+/* While the track plays, the ripple rings turn like a record. The spin is
+   always set but paused, so on pause they stop where they are. */
+.photo-stage .photo-rings {
+  animation: rings-spin 24s linear infinite paused;
+}
+
+.is-playing .photo-stage .photo-rings {
+  animation-play-state: running;
 }
 
 @keyframes rings-spin {
@@ -133,8 +139,104 @@
   }
 }
 
+/* Record mode, only while playing: dark vinyl grooves close in from the
+   edge, leaving the photo as the record's centre label, and the photo spins
+   at 33⅓ rpm (1.8s a turn). On pause the grooves pull back out. The grooves and shine stay still, like light on a real
+   record; only the label visibly turns. */
+/* The label's radius as a share of the record's radius: 102% hides the
+   vinyl completely; the playing value sets how much of the photo stays
+   visible as the label. */
+@property --record-label {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 102%;
+}
+
+.record-vinyl,
+.record-spindle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.record-vinyl {
+  --record-label: 102%;
+  inset: var(--photo-frame-padding);
+  border-radius: 50%;
+  background:
+    /* Cognac ring around the label */
+    radial-gradient(
+      circle closest-side,
+      transparent var(--record-label),
+      var(--color-accent) var(--record-label),
+      var(--color-accent) calc(var(--record-label) + 2.5%),
+      transparent calc(var(--record-label) + 2.5%)
+    ),
+    /* Shine */
+    conic-gradient(
+      from 20deg,
+      transparent 0deg,
+      rgba(255, 236, 214, 0.16) 35deg,
+      transparent 80deg,
+      transparent 180deg,
+      rgba(255, 236, 214, 0.12) 215deg,
+      transparent 260deg
+    ),
+    /* Grooves */
+    repeating-radial-gradient(circle, #17110d 0 1.5px, #261d17 1.5px 3px);
+  /* Only the band outside the label shows. */
+  mask: radial-gradient(
+    circle closest-side,
+    transparent calc(var(--record-label) - 0.5%),
+    #000 var(--record-label)
+  );
+  transition: --record-label 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.is-playing .record-vinyl {
+  --record-label: 55%;
+}
+
+.record-spindle {
+  left: 50%;
+  top: 50%;
+  width: 3.5%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--color-bg);
+  box-shadow: 0 0 0 2px rgba(28, 23, 18, 0.35);
+  opacity: 0;
+  transition: opacity 300ms ease 300ms;
+}
+
+.is-playing .record-spindle {
+  opacity: 1;
+}
+
+/* The photo spins while playing and, when paused, stays at whatever angle
+   it had reached, like a record when you lift the needle. */
+.photo-stage .photo {
+  animation: record-spin 1.8s linear infinite paused;
+}
+
+.is-playing .photo-stage .photo {
+  animation-play-state: running;
+}
+
+@keyframes record-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .is-playing .photo-rings {
+  .photo-stage .photo-rings,
+  .photo-stage .photo {
     animation: none;
+  }
+
+  .record-vinyl,
+  .record-spindle {
+    transition: none;
   }
 }

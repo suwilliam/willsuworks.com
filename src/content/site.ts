@@ -3,10 +3,19 @@
 
 export type Link = { label: string; href: string }
 
+export type Org = {
+  name: string
+  /** Optional website; the name (and logo) link to it. */
+  url?: string
+  /** Optional logo shown beside the name, e.g. '/images/logos/retool.svg'. */
+  logo?: string
+}
+
 export type Role = {
   years: string
   title: string
-  org: string
+  /** Usually one; list several for a joint program and they share a line. */
+  orgs: Org[]
   summary?: string
 }
 
@@ -33,11 +42,6 @@ export type FeaturedTrack = {
   artist: string
   /** The track's public SoundCloud link. */
   url: string
-}
-
-export type Interest = {
-  title: string
-  text?: string
 }
 
 export type SiteContent = {
@@ -71,10 +75,6 @@ export type SiteContent = {
     intro: string
     tracks: Track[]
   }
-  interests: {
-    intro: string
-    items: Interest[]
-  }
   contact: {
     intro: string
   }
@@ -87,6 +87,7 @@ export const site: SiteContent = {
   socials: [
     { label: 'GitHub', href: 'https://github.com/suwilliam' },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/suwilliam' },
+    { label: 'SoundCloud', href: 'https://soundcloud.com/will-su-360072221' },
   ],
 
   home: {
@@ -100,7 +101,7 @@ export const site: SiteContent = {
       zoom: 1.4,
     },
     track: {
-      title: 'daydreaming by the window at sunset',
+      title: '[dj set] daydreaming by the window at sunset',
       artist: 'wills street',
       url: 'https://soundcloud.com/will-su-360072221/daydreaming-by-the-window-at-sunset',
     },
@@ -113,28 +114,46 @@ export const site: SiteContent = {
       {
         years: '2026 – 2028',
         title: 'MBA and MS in AI & Machine Learning',
-        org: 'Columbia University',
+        orgs: [
+          {
+            name: 'Columbia Business School',
+            url: 'https://business.columbia.edu',
+            logo: '/images/logos/columbia-business-school.svg',
+          },
+          {
+            name: 'Columbia University',
+            url: 'https://www.columbia.edu',
+            logo: '/images/logos/columbia-university.svg',
+          },
+        ],
         summary:
-          'MBA in Technology Strategy & Entrepreneurship at Columbia Business School, alongside an MS at Columbia Engineering.',
+          'An MBA focused on tech strategy and entrepreneurship, paired with an MS in AI from Columbia Engineering.',
       },
       {
         years: '2022 – 2026',
         title: 'Product Engineer / Product Manager',
-        org: 'Retool',
+        orgs: [{ name: 'Retool', url: 'https://retool.com', logo: '/images/logos/retool.svg' }],
         summary:
-          "Led the redesign of Retool's core IDE for 40K+ monthly users, and took a record-and-replay testing platform from zero to early adoption across ~15 enterprise accounts.",
+          "I wore both the engineer and PM hats here. I led the redesign of Retool's core editor, which shipped to 40K+ monthly users, and built a record-and-replay testing product from scratch that landed with ~15 enterprise customers.",
       },
       {
         years: '2018 – 2022',
         title: 'Product / Software Engineer',
-        org: 'Amplitude',
+        orgs: [{ name: 'Amplitude', url: 'https://amplitude.com', logo: '/images/logos/amplitude.svg' }],
         summary:
-          'Tech lead for the dashboard experience, which grew 50% to ~30K monthly users. Built the first user-group permissions system and a faster chart export service. Promoted twice.',
+          "Joined at Series C and stayed through the IPO, going from engineer to tech lead. I led dashboards (up 50% to ~30K monthly users), built Amplitude's first permissions system, and interviewed 50+ engineers as the team tripled.",
       },
       {
         years: '2014 – 2018',
         title: 'BS in Computer Science',
-        org: 'Georgia Institute of Technology',
+        orgs: [
+          {
+            name: 'Georgia Institute of Technology',
+            url: 'https://www.gatech.edu',
+            logo: '/images/logos/georgia-tech.svg',
+          },
+        ],
+        summary: 'Concentrations in Intelligence and Big Data.',
       },
     ],
   },
@@ -173,20 +192,6 @@ export const site: SiteContent = {
       { title: '[Track title]', detail: 'Single · 2026', length: '3:42', href: '#' },
       { title: '[Track title]', detail: 'EP · 2025', length: '4:10', href: '#' },
       { title: '[Track title]', detail: 'Demo · 2024', length: '2:58', href: '#' },
-    ],
-  },
-
-  interests: {
-    intro: '[A line about what you do when you are not working or making music.]',
-    items: [
-      { title: 'DJing', text: 'Mostly jazz and house.' },
-      { title: 'Scuba diving', text: 'Advanced certified.' },
-      { title: 'Surfing' },
-      {
-        title: 'Biking',
-        text: 'Rode AIDS/LifeCycle from San Francisco to LA and raised $4K for HIV services.',
-      },
-      { title: 'Living abroad' },
     ],
   },
 

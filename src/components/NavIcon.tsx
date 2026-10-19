@@ -10,10 +10,15 @@ const icons = {
       <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
     </>
   ),
+  // A framed picture hanging on a wire: frame, inner mat, and a little
+  // landscape with a sun.
   portfolio: (
     <>
-      <path d="m16 18 6-6-6-6" />
-      <path d="m8 6-6 6 6 6" />
+      <path d="M8.5 6 12 2.5 15.5 6" />
+      <rect width="18" height="15" x="3" y="6" rx="1.5" />
+      <rect width="12" height="9" x="6" y="9" rx="0.5" />
+      <path d="m6 16.5 3.5-3.5 3 3 1.5-1.5 4 4" />
+      <circle cx="14.5" cy="11.5" r="1" />
     </>
   ),
   music: (
@@ -23,9 +28,6 @@ const icons = {
       <path d="M12 18.5A6.5 6.5 0 0 1 5.5 12" />
       <circle cx="12" cy="12" r="2.5" />
     </>
-  ),
-  interests: (
-    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
   ),
   contact: (
     <>
