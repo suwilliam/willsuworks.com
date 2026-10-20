@@ -313,6 +313,15 @@
   }
 }
 
+/* The map dot before the location. */
+.hero-based-dot {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
 /* The same swell for the smaller line under the name. Movement is measured
    in em (relative to the text size), so this line needs bigger values than
    the name to move a similar distance on screen. */

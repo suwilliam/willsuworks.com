@@ -40,7 +40,7 @@ export type SiteContent = {
   socials: Link[]
   home: {
     greeting?: string
-    /** A short line under the big heading, shown with a map pin. */
+    /** A short line under the big heading, shown after a small map dot. */
     based?: string
     /** Paragraphs. Write [words](/page) to link words to a page or a website. */
     intro: string[]
@@ -87,7 +87,7 @@ export const site: SiteContent = {
   ],
 
   home: {
-    based: '🏠  New York, NY',
+    based: 'New York, NY',
     intro: [
       'Building [cool things](/portfolio) and getting [two master degrees](/tech) at Columbia',
     ],

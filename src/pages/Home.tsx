@@ -22,6 +22,11 @@ export default function Home() {
         <FilmTitle text={site.name} />
         {based && (
           <p className="hero-based">
+            {/* A tiny map marker: a cognac dot with a faint ring. */}
+            <svg className="hero-based-dot" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="12" cy="12" r="8" fill="none" strokeWidth="1.5" opacity="0.45" />
+            </svg>
             {/* Continues the name's wave, so the swell rolls on into this line. */}
             {withIcon(based, (text) => (
               <span className="wave-gentle" aria-label={text}>
