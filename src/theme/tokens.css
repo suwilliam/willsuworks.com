@@ -16,6 +16,8 @@
   --text-lead: 22px;
   --text-h2: 32px;
   --text-h1: clamp(44px, 7vw, 68px);
+  /* Headings on inner pages (Portfolio, Music, projects), a step below the homepage's. */
+  --text-page-title: clamp(26px, 3.4vw, 32px);
 
   /* Real walnut veneer (Poly Haven, CC0), graded to the theme's browns. */
   --wood-grain: #6e4126 url('/textures/walnut.jpg') 0 0 / 512px 512px repeat;

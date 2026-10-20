@@ -1,0 +1,166 @@
+/* Figures in a case study: image, video or Figma prototype, with a caption. */
+.media {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.media img,
+.media video,
+.media iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+
+.media iframe {
+  aspect-ratio: 16 / 10;
+}
+
+.media figcaption {
+  color: var(--color-text-subtle);
+  font-size: var(--text-small);
+}
+
+.media-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  cursor: zoom-in;
+}
+
+/* An empty slot: a dashed box naming what goes there. */
+.media-placeholder {
+  aspect-ratio: 16 / 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: var(--space-m);
+  border: 2px dashed var(--color-line);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text-subtle);
+  font-size: var(--text-small);
+  text-align: center;
+}
+
+.media-placeholder-kind {
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Full-size image viewer */
+.lightbox {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-l) var(--space-xl);
+  border: 0;
+  background: rgba(20, 13, 8, 0.92);
+  color: var(--color-button-text);
+}
+
+.lightbox::backdrop {
+  background: transparent;
+}
+
+.lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightbox-in 200ms ease-out;
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightbox figure {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: calc(100vh - 2 * var(--space-l) - 3em);
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.lightbox figcaption {
+  max-width: 720px;
+  font-size: var(--text-small);
+  text-align: center;
+  opacity: 0.85;
+}
+
+.lightbox button {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(239, 229, 210, 0.12);
+  color: inherit;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox button:hover {
+  background: rgba(239, 229, 210, 0.24);
+}
+
+.lightbox-close {
+  top: var(--space-s);
+  right: var(--space-s);
+}
+
+.lightbox-step {
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.lightbox-prev {
+  left: var(--space-s);
+}
+
+.lightbox-next {
+  right: var(--space-s);
+}
+
+@media (max-width: 600px) {
+  .lightbox {
+    padding: var(--space-xl) var(--space-s);
+  }
+
+  .lightbox-step {
+    top: auto;
+    bottom: var(--space-s);
+    translate: none;
+  }
+}

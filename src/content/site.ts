@@ -19,17 +19,6 @@ export type Role = {
   summary?: string
 }
 
-export type Project = {
-  title: string
-  /** e.g. '2025', or 'Retool · 2024' */
-  detail?: string
-  summary?: string
-  /** Tech used, shown as small tags. */
-  stack?: string[]
-  /** e.g. { label: 'Live', href: '…' }, { label: 'Code', href: '…' } */
-  links?: Link[]
-}
-
 export type Track = {
   title: string
   detail: string
@@ -51,6 +40,9 @@ export type SiteContent = {
   socials: Link[]
   home: {
     greeting?: string
+    /** A short line under the big heading, shown with a map pin. */
+    based?: string
+    /** Paragraphs. Write [words](/page) to link words to a page or a website. */
     intro: string[]
     /**
      * Put the image in /public/images and set src to e.g. '/images/photo.jpg'.
@@ -67,32 +59,37 @@ export type SiteContent = {
     resumeUrl: string
     roles: Role[]
   }
-  portfolio: {
-    intro: string
-    projects: Project[]
-  }
   music: {
     intro: string
+    /** Optional line shown under the tracklist. Wrap words in *asterisks* for italics. */
+    outro?: string
+    /** Shown as the artist when a track plays in the site's player. */
+    artist: string
+    /** The artist card under the tracklist. */
+    profile?: { image: string; tagline?: string; url: string }
     tracks: Track[]
   }
   contact: {
     intro: string
+    /** Email addresses listed on the Contact page, each with its own copy button. */
+    emails: { label: string; address: string }[]
   }
 }
 
 export const site: SiteContent = {
-  name: 'Will',
+  name: 'William Su',
   location: 'New York, NY',
   email: 'willsuwrites@gmail.com',
   socials: [
     { label: 'GitHub', href: 'https://github.com/suwilliam' },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/suwilliam' },
-    { label: 'SoundCloud', href: 'https://soundcloud.com/will-su-360072221' },
+    { label: 'SoundCloud', href: 'https://soundcloud.com/willinspace' },
   ],
 
   home: {
+    based: '🏠  New York, NY',
     intro: [
-      "I'm at Columbia doing an MBA and currently producing my first EP.",
+      'Building [cool things](/portfolio) and getting [two master degrees](/tech) at Columbia',
     ],
     photo: {
       src: '/images/profile.jpg',
@@ -102,8 +99,8 @@ export const site: SiteContent = {
     },
     track: {
       title: '[dj set] daydreaming by the window at sunset',
-      artist: 'wills street',
-      url: 'https://soundcloud.com/will-su-360072221/daydreaming-by-the-window-at-sunset',
+      artist: 'will in space',
+      url: 'https://soundcloud.com/willinspace/daydreaming-by-the-window-at-sunset',
     },
   },
 
@@ -158,44 +155,41 @@ export const site: SiteContent = {
     ],
   },
 
-  portfolio: {
-    intro: '[A line about the things you build.]',
-    projects: [
-      {
-        title: '[Project name]',
-        detail: '2026',
-        summary: '[What it is, what you built, and what happened.]',
-        stack: ['React', 'TypeScript'],
-        links: [
-          { label: 'Live', href: '#' },
-          { label: 'Code', href: '#' },
-        ],
-      },
-      {
-        title: '[Project name]',
-        detail: '2025',
-        summary: '[What it is, what you built, and what happened.]',
-        stack: ['Python'],
-        links: [{ label: 'Code', href: '#' }],
-      },
-      {
-        title: '[Project name]',
-        detail: '2024',
-        summary: '[What it is, what you built, and what happened.]',
-      },
-    ],
-  },
-
   music: {
-    intro: 'I produce in Ableton and DJ jazz and house. My first EP is in the works.',
+    intro: 'I make music in Ableton and DJ house and jazz sometimes. Here are a couple of tracks I made.',
+    outro: 'My first EP under my artist project name *will in space* is in the works.',
+    artist: 'will in space',
+    profile: {
+      image: '/images/will-in-space.jpg',
+      url: 'https://soundcloud.com/willinspace',
+    },
     tracks: [
-      { title: '[Track title]', detail: 'Single · 2026', length: '3:42', href: '#' },
-      { title: '[Track title]', detail: 'EP · 2025', length: '4:10', href: '#' },
-      { title: '[Track title]', detail: 'Demo · 2024', length: '2:58', href: '#' },
+      {
+        title: 'jump',
+        detail: 'House · 2026',
+        length: '2:46',
+        href: 'https://soundcloud.com/willinspace/jump',
+      },
+      {
+        title: 'thats the way',
+        detail: 'Drum & Bass · 2026',
+        length: '2:15',
+        href: 'https://soundcloud.com/willinspace/thats-the-way',
+      },
+      {
+        title: 'dont worry',
+        detail: 'DnB Pop · 2026',
+        length: '4:07',
+        href: 'https://soundcloud.com/willinspace/dont-worry',
+      },
     ],
   },
 
   contact: {
-    intro: "Want to collaborate, talk product, or trade music? I'd love to hear from you.",
+    intro: "Want to collaborate, talk product, trade music, or hire me? I'd love to hear from you.",
+    emails: [
+      { label: 'Personal', address: 'willsuwrites@gmail.com' },
+      { label: 'Columbia', address: 'wsu28@gsb.columbia.edu' },
+    ],
   },
 }

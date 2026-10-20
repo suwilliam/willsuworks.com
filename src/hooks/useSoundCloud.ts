@@ -9,7 +9,9 @@ type ProgressData = { currentPosition: number }
 
 type Widget = {
   toggle(): void
+  play(): void
   pause(): void
+  load(url: string, options: Record<string, unknown> & { callback?: () => void }): void
   seekTo(milliseconds: number): void
   getDuration(callback: (milliseconds: number) => void): void
   bind(event: string, listener: (data?: ProgressData) => void): void
@@ -37,7 +39,8 @@ function loadApi(): Promise<SoundCloudApi> {
     const script = document.createElement('script')
     script.src = API_SRC
     script.async = true
-    script.onload = () => (window.SC ? resolve(window.SC) : reject(new Error('SoundCloud API missing')))
+    script.onload = () =>
+      window.SC ? resolve(window.SC) : reject(new Error('SoundCloud API missing'))
     script.onerror = () => {
       apiLoading = null
       reject(new Error('SoundCloud API failed to load'))
@@ -95,6 +98,21 @@ export function useSoundCloud(trackUrl: string) {
   }, [trackUrl])
 
   const toggle = useCallback(() => widgetRef.current?.toggle(), [])
+  // Swaps in another track and starts it. SoundCloud keeps the event
+  // listeners bound above, so state keeps updating for the new track.
+  const load = useCallback((url: string) => {
+    const widget = widgetRef.current
+    if (!widget) return
+    setPosition(0)
+    setDuration(0)
+    widget.load(url, {
+      auto_play: true,
+      visual: false,
+      show_artwork: false,
+      // Some browsers ignore auto_play after a swap, so ask once it's loaded.
+      callback: () => widget.play(),
+    })
+  }, [])
   const pause = useCallback(() => widgetRef.current?.pause(), [])
   const seek = useCallback((milliseconds: number) => {
     widgetRef.current?.seekTo(milliseconds)
@@ -110,5 +128,17 @@ export function useSoundCloud(trackUrl: string) {
       show_artwork: 'false',
     }).toString()
 
-  return { iframeRef, embedSrc, ready, playing, started, position, duration, toggle, pause, seek }
+  return {
+    iframeRef,
+    embedSrc,
+    ready,
+    playing,
+    started,
+    position,
+    duration,
+    toggle,
+    load,
+    pause,
+    seek,
+  }
 }

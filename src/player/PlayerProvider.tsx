@@ -18,8 +18,21 @@ export default function PlayerProvider({
 }
 
 function ActivePlayer({ track, children }: { track: FeaturedTrack; children: ReactNode }) {
-  const { iframeRef, embedSrc, ready, playing, started, position, duration, toggle, pause, seek } =
-    useSoundCloud(track.url)
+  // The widget starts on the featured track; play() can swap in others.
+  const {
+    iframeRef,
+    embedSrc,
+    ready,
+    playing,
+    started,
+    position,
+    duration,
+    toggle,
+    load,
+    pause,
+    seek,
+  } = useSoundCloud(track.url)
+  const [current, setCurrent] = useState(track)
   const [closed, setClosed] = useState(false)
 
   // Pressing play again after closing brings the bar back.
@@ -28,6 +41,19 @@ function ActivePlayer({ track, children }: { track: FeaturedTrack; children: Rea
     toggle()
   }, [toggle])
 
+  const play = useCallback(
+    (next: FeaturedTrack) => {
+      setClosed(false)
+      if (next.url === current.url) {
+        toggle()
+      } else {
+        setCurrent(next)
+        load(next.url)
+      }
+    },
+    [current.url, toggle, load],
+  )
+
   const close = useCallback(() => {
     pause()
     setClosed(true)
@@ -35,17 +61,30 @@ function ActivePlayer({ track, children }: { track: FeaturedTrack; children: Rea
 
   const player = useMemo<Player>(
     () => ({
-      track,
+      track: current,
       ready,
       playing,
       position,
       duration,
       barVisible: started && !closed,
       toggle: togglePlayback,
+      play,
       seek,
       close,
     }),
-    [track, ready, playing, position, duration, started, closed, togglePlayback, seek, close],
+    [
+      current,
+      ready,
+      playing,
+      position,
+      duration,
+      started,
+      closed,
+      togglePlayback,
+      play,
+      seek,
+      close,
+    ],
   )
 
   return (
@@ -56,7 +95,7 @@ function ActivePlayer({ track, children }: { track: FeaturedTrack; children: Rea
         ref={iframeRef}
         className="player-embed"
         src={embedSrc}
-        title={`SoundCloud player for ${track.title} by ${track.artist}`}
+        title={`SoundCloud player for ${current.title} by ${current.artist}`}
         allow="autoplay; encrypted-media"
         tabIndex={-1}
         aria-hidden="true"

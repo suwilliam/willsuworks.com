@@ -10,9 +10,9 @@ type PhotoProps = {
 // Ripple border: concentric rings around the photo that drift from a circle
 // near the photo into a looser, lopsided shape at the outside, like op-art
 // or tree rings. Shown when a theme sets --photo-rings: block.
-// RING_BAND must match the theme's --photo-frame-padding (11% = 0.11): it is
+// RING_BAND must match the theme's --photo-frame-padding (14% = 0.14): it is
 // the share of the frame's width on each side that the rings fill.
-const RING_BAND = 0.11
+const RING_BAND = 0.14
 const RING_COUNT = 4
 // How much the ring spacing varies around the photo (0 = perfect circles).
 const RING_STRETCH = 0.35

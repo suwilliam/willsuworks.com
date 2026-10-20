@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigationType } from 'react-router-dom'
+import { findProject, projects } from '../content/projects'
 import { site } from '../content/site'
 import NowPlayingBar from '../player/NowPlayingBar'
 import { usePlayer } from '../player/context'
@@ -25,7 +26,7 @@ export default function Layout() {
 
           <header className="site-header container">
             <Link to="/" className="brand" aria-label={`${site.name}, home`} data-tooltip="Home">
-              <WaveMark size={38} />
+              <WaveMark size={48} />
             </Link>
             <nav className="site-nav" aria-label="Main">
               {pages
@@ -81,7 +82,7 @@ export default function Layout() {
                     aria-label={link.label}
                     title={link.label}
                   >
-                    <SocialIcon label={link.label} />
+                    <SocialIcon label={link.label} size={18} />
                   </a>
                 ))}
               </div>
@@ -110,7 +111,7 @@ function FooterPlayButton() {
       aria-label={`Play ${player.track.title}`}
     >
       <span className="site-footer-play-icon">
-        <PlayPauseIcon playing={false} size={16} />
+        <PlayPauseIcon playing={false} size={12} />
       </span>
       <span className="site-footer-play-title">{player.track.title}</span>
     </button>
@@ -129,7 +130,8 @@ function usePageChange() {
 
   useEffect(() => {
     const page = pages.find((p) => p.path === pathname)
-    const label = page ? page.navLabel : 'Not found'
+    const project = projects[findProject(projectSlug(pathname))]
+    const label = page ? page.navLabel : project ? project.title : 'Not found'
     document.title = label ? `${label} · William Su` : 'William Su'
   }, [pathname])
 }
@@ -146,12 +148,21 @@ function useSlideDirection(pathname: string) {
   if (state.path !== pathname) {
     const order = (path: string) => {
       const index = pages.findIndex((p) => p.path === path)
-      return index === -1 ? pages.length : index
+      if (index !== -1) return index
+      // Project pages sit just after Portfolio, in project order.
+      const project = findProject(projectSlug(path))
+      if (project !== -1) return pages.findIndex((p) => p.path === '/portfolio') + (project + 1) / 100
+      return pages.length
     }
     setState({ path: pathname, direction: order(pathname) > order(state.path) ? 'right' : 'left' })
   }
 
   return state.direction
+}
+
+// The <slug> in /portfolio/<slug>, if the path is a project page.
+function projectSlug(path: string) {
+  return path.match(/^\/portfolio\/([^/]+)\/?$/)?.[1]
 }
 
 // True once the page has scrolled past the top, so the sticky header can show its divider.

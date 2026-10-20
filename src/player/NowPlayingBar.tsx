@@ -1,4 +1,5 @@
 import { useState, type AnimationEvent, type CSSProperties } from 'react'
+import ArtistLink from '../components/ArtistLink'
 import NavIcon from '../components/NavIcon'
 import SocialIcon from '../components/SocialIcon'
 import { site } from '../content/site'
@@ -52,18 +53,18 @@ export default function NowPlayingBar() {
           onClick={toggle}
           aria-label={playing ? 'Pause' : 'Play'}
         >
-          <PlayPauseIcon playing={playing} size={17} />
+          <PlayPauseIcon playing={playing} size={14} />
         </button>
 
         <div className={`now-playing-track${playing ? ' is-playing' : ''}`}>
           <span className="now-playing-record" aria-hidden="true">
-            <NavIcon name="music" size={22} />
+            <NavIcon name="music" size={18} />
           </span>
           <span className="now-playing-text">
             <a href={track.url} target="_blank" rel="noreferrer" className="now-playing-title">
               {track.title}
             </a>
-            <span className="now-playing-artist">{track.artist}</span>
+            <ArtistLink name={track.artist} className="now-playing-artist" />
           </span>
         </div>
 
@@ -109,8 +110,8 @@ export default function NowPlayingBar() {
         >
           <svg
             viewBox="0 0 24 24"
-            width="18"
-            height="18"
+            width="15"
+            height="15"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"

@@ -20,20 +20,61 @@
   text-align: right;
 }
 
+/* The intro lines line up on the right edge with the heading. */
+.hero-text > p.muted {
+  text-align: right;
+}
+
+/* "Based in NYC": sits snug under the heading, lined up on its right edge. */
+.hero-based {
+  margin-top: calc(-1 * var(--space-s));
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text);
+  /* Shrikhand comes in one heavy weight only, so a smaller size keeps it
+     lighter than the name. */
+  font-size: 16px;
+  /* Same font as the name above. Shrikhand has one heavy, slanted style
+     built in, so no extra weight or italic. */
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
 .hero-photo {
   flex: 1 1 300px;
   max-width: var(--hero-photo-max, 400px);
   order: var(--hero-photo-order);
 }
 
-/* On narrow screens the photo always comes first. */
-@media (max-width: 760px) {
+/* Phones and tablets: one centered column, photo after the intro. The breakpoint sits
+   just above the width where the two columns would wrap on their own, so the
+   layout never falls into a lopsided wrapped state. */
+@media (max-width: 880px) {
   .hero {
+    flex-direction: column;
     gap: var(--space-l);
   }
 
+  .hero-text {
+    flex: none;
+    width: 100%;
+  }
+
   .hero-photo {
-    order: -1;
+    flex: none;
+    width: 100%;
+    order: 1;
+  }
+
+  .hero-text h1,
+  .hero-text > p.muted {
+    text-align: center;
+  }
+
+  .hero-based {
+    justify-content: center;
   }
 }
 
@@ -123,14 +164,10 @@
   color: var(--color-accent);
 }
 
-/* While the track plays, the ripple rings turn like a record. The spin is
-   always set but paused, so on pause they stop where they are. */
+/* The ripple rings slowly turn all the time, like a record on the platter,
+   whether or not the track is playing. */
 .photo-stage .photo-rings {
-  animation: rings-spin 24s linear infinite paused;
-}
-
-.is-playing .photo-stage .photo-rings {
-  animation-play-state: running;
+  animation: rings-spin 24s linear infinite;
 }
 
 @keyframes rings-spin {
@@ -238,5 +275,73 @@
   .record-vinyl,
   .record-spindle {
     transition: none;
+  }
+}
+
+/* Ocean-wave title: the letters rise and fall in a slow swell that rolls
+   across the name from left to right, each one tilting with the slope of the
+   wave like a buoy. One swell takes 8s; each letter trails the one before
+   by 260ms. The negative delay starts the wave already in motion. */
+.film-title-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.film-title-letter {
+  display: inline-block;
+  animation: film-swell 8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 260ms - 8s);
+}
+
+@keyframes film-swell {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  25% {
+    translate: 0 -0.04em;
+    rotate: -1.5deg;
+  }
+  50% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  75% {
+    translate: 0 0.025em;
+    rotate: 1.5deg;
+  }
+}
+
+/* The same swell for the smaller line under the name. Movement is measured
+   in em (relative to the text size), so this line needs bigger values than
+   the name to move a similar distance on screen. */
+.wave-gentle .film-title-letter {
+  animation-name: film-swell-gentle;
+}
+
+@keyframes film-swell-gentle {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  25% {
+    translate: 0 -0.12em;
+    rotate: -3deg;
+  }
+  50% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  75% {
+    translate: 0 0.07em;
+    rotate: 3deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-title-letter {
+    animation: none;
   }
 }

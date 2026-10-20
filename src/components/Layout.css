@@ -26,13 +26,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-s);
   padding-block: 14px;
 }
 
+/* The drawing sits low in its 48px box and the nav buttons are 40px, so the
+   logo is nudged up to line its middle up with the middle of the buttons.
+   Lining up to the top (not center) keeps this true on phones, where labels
+   hang under the buttons. */
 .brand {
   display: inline-flex;
+  margin-top: -9px;
   color: var(--color-text);
   transition: color 150ms ease;
 }
@@ -126,7 +131,14 @@
     .cards > li,
     .contact-email,
     .contact-links > li,
-    .page > p
+    .page > p,
+    .artist-card,
+    .project-back,
+    .project-cover,
+    .project-glance,
+    .project-impact > li,
+    .project-section,
+    .project-pager
   ) {
   animation: page-slide-in 650ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
   animation-delay: calc(var(--slide-base, 0ms) + var(--slide-i, 0) * 70ms);
@@ -142,12 +154,21 @@
   --slide-base: 140ms;
 }
 
-.page-transition .page > p {
+.page-transition :is(.page > p, .artist-card) {
   --slide-base: 380ms;
 }
 
+.page-transition :is(.project-cover, .project-glance) {
+  --slide-base: 160ms;
+}
+
+.page-transition :is(.project-impact > li, .project-section, .project-pager) {
+  --slide-base: 260ms;
+}
+
 /* Stagger: each item waits a beat longer than the one before. */
-.page-transition :is(.page-header, .hero-text, .timeline, .tracklist, .cards, .contact-links) {
+.page-transition
+  :is(.page-header, .hero-text, .timeline, .tracklist, .cards, .contact-links, .project-impact, .project-story) {
   & > :nth-child(2) {
     --slide-i: 1;
   }
@@ -187,7 +208,7 @@
 
 .site {
   /* Heights shared by the dock and its spacer. */
-  --footer-height: 48px;
+  --footer-height: 46px;
   --dock-bar-height: 0px;
 }
 
@@ -260,7 +281,7 @@
 
 .site-footer-links {
   height: var(--footer-height);
-  min-height: 48px;
+  min-height: 46px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -284,7 +305,7 @@
 .site-footer-socials {
   display: flex;
   align-items: center;
-  gap: var(--space-m);
+  gap: 16px;
   margin-left: auto;
 }
 
@@ -293,20 +314,20 @@
   min-width: 0;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 0;
   border: 0;
   background: none;
   color: #f3e7d3;
   cursor: pointer;
-  font-size: var(--text-small);
+  font-size: 14px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .site-footer-play-icon {
   flex: none;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   display: inline-grid;
   place-items: center;
   border-radius: 50%;

@@ -1,7 +1,7 @@
 /* Cream Rug: light 70s modern. Cream wool ground, chocolate text,
    black leather buttons, cognac links and a walnut strip up top. */
 [data-theme='cream-rug'] {
-  --color-bg: #ece3d0;
+  --color-bg: #fefbf5;
   --color-surface: #e3d7bf;
   --color-text: #2a1a10;
   --color-text-muted: #4d3626;
@@ -16,7 +16,7 @@
   --color-button-active-text: #f6ead6;
 
   --font-display: 'Shrikhand', 'Cooper Black', Georgia, serif;
-  --font-body: 'Fraunces', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
   --display-variation: normal;
   --display-weight: 400;
 
@@ -33,9 +33,9 @@
   --photo-rings: block;
   --photo-ring-color: var(--color-accent);
   --photo-frame-bg: none;
-  --photo-frame-padding: 11%;
+  --photo-frame-padding: 14%;
   /* Wider than the 400px default so the rings don't shrink the photo itself. */
-  --hero-photo-max: 440px;
+  --hero-photo-max: 476px;
   --photo-frame-radius: 0px;
   /* 1 puts the photo after the intro (right side); -1 puts it first. */
   --hero-photo-order: 1;

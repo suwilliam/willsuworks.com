@@ -17,6 +17,7 @@ npm run preview  # serve the production build locally
 | To change…                 | Edit                                         |
 | -------------------------- | -------------------------------------------- |
 | Any text, links, jobs, projects, tracks | `src/content/site.ts`          |
+| Portfolio projects (case studies) | `src/content/projects.ts`; images and videos go in `public/images/projects/<slug>/` |
 | Your photo                 | `public/images/profile.jpg`, referenced by `home.photo` in `src/content/site.ts`. `position` controls the crop. |
 | Your resume                | `public/William_Su_Resume.pdf`, referenced by `work.resumeUrl` |
 | Which pages exist / menu order | `src/pages/index.ts`                      |
