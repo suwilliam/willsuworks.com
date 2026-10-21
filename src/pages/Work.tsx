@@ -1,4 +1,5 @@
 import PageHeader from '../components/PageHeader'
+import Ripples from '../components/Ripples'
 import RichText from '../components/RichText'
 import SocialIcon from '../components/SocialIcon'
 import { site, type Org } from '../content/site'
@@ -13,7 +14,14 @@ export default function Work() {
 
   return (
     <div className="page container">
-      <PageHeader eyebrow="Tech Experience" intro={intro}>
+      <PageHeader
+        eyebrow="Tech Experience"
+        intro={intro}
+        ripple={[
+          { top: '0px', right: '0px', size: 'min(340px, calc(100% - 840px))' },
+          { top: '520px', edge: 'left', size: '260px' },
+        ]}
+      >
         <div className="page-header-actions">
           <a className="button" href={resumeUrl} target="_blank" rel="noreferrer">
             Download resume
@@ -37,9 +45,20 @@ export default function Work() {
       </PageHeader>
 
       <ol className="timeline">
-        {roles.map((role) => (
+        {roles.map((role, index) => (
           <li key={`${role.years}-${role.orgs[0]?.name}`} className="timeline-item">
-            <span className="timeline-years">{role.years}</span>
+            <span className="timeline-years">
+              <Ripples
+                className="timeline-ripple"
+                inner={0.08}
+                band={0.4}
+                count={2}
+                thickness={0.52}
+                stretch={0.25}
+                phase={index * 1.7}
+              />
+              {role.years}
+            </span>
             <div>
               <h2 className="timeline-title">{role.title}</h2>
               <p className="timeline-org">

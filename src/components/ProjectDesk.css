@@ -86,8 +86,8 @@
 
 .desk-icon-image {
   display: block;
-  width: 108px;
-  height: 72px;
+  width: calc(108px * var(--cloud-scale, 1));
+  height: calc(72px * var(--cloud-scale, 1));
   /* A soft shadow under the cloud, following its shape. */
   filter: drop-shadow(0 10px 10px rgba(42, 26, 16, 0.35));
   transition:
@@ -107,8 +107,27 @@
   padding-top: 14px;
   /* Cream on top, warming to a sunset tint underneath. */
   background: linear-gradient(#fffaf2 35%, #f7dcc0);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cpath d='M30 74a22 22 0 0 1-4-43.6A28 28 0 0 1 80 20a24 24 0 0 1 22 17.5A19 19 0 0 1 98 74Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cpath d='M30 74a22 22 0 0 1-4-43.6A28 28 0 0 1 80 20a24 24 0 0 1 22 17.5A19 19 0 0 1 98 74Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* Cloud outlines (see CLOUDS in ProjectDesk.tsx). */
+.cloud-puffy .desk-icon-cloud {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='34' cy='52' r='20'/%3E%3Ccircle cx='60' cy='36' r='26'/%3E%3Ccircle cx='88' cy='48' r='20'/%3E%3Crect x='14' y='48' width='92' height='26' rx='13'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='34' cy='52' r='20'/%3E%3Ccircle cx='60' cy='36' r='26'/%3E%3Ccircle cx='88' cy='48' r='20'/%3E%3Crect x='14' y='48' width='92' height='26' rx='13'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cloud-long .desk-icon-cloud {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='24' cy='58' r='15'/%3E%3Ccircle cx='48' cy='44' r='20'/%3E%3Ccircle cx='74' cy='42' r='22'/%3E%3Ccircle cx='98' cy='56' r='15'/%3E%3Crect x='9' y='56' width='104' height='18' rx='9'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='24' cy='58' r='15'/%3E%3Ccircle cx='48' cy='44' r='20'/%3E%3Ccircle cx='74' cy='42' r='22'/%3E%3Ccircle cx='98' cy='56' r='15'/%3E%3Crect x='9' y='56' width='104' height='18' rx='9'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cloud-tall .desk-icon-cloud {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='40' cy='50' r='22'/%3E%3Ccircle cx='66' cy='32' r='29'/%3E%3Ccircle cx='88' cy='54' r='18'/%3E%3Crect x='18' y='52' width='86' height='22' rx='11'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='40' cy='50' r='22'/%3E%3Ccircle cx='66' cy='32' r='29'/%3E%3Ccircle cx='88' cy='54' r='18'/%3E%3Crect x='18' y='52' width='86' height='22' rx='11'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cloud-double .desk-icon-cloud {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='42' cy='44' r='25'/%3E%3Ccircle cx='80' cy='48' r='22'/%3E%3Crect x='16' y='50' width='90' height='24' rx='12'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='42' cy='44' r='25'/%3E%3Ccircle cx='80' cy='48' r='22'/%3E%3Crect x='16' y='50' width='90' height='24' rx='12'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 @keyframes desk-cloud-bob {
@@ -140,7 +159,7 @@
 
 .desk-icon-letter {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: calc(30px * var(--cloud-scale, 1));
   line-height: 1;
   color: var(--color-accent);
 }
@@ -310,8 +329,8 @@
   }
 
   .desk-icon-image {
-    width: 90px;
-    height: 60px;
+    width: calc(90px * var(--cloud-scale, 1));
+    height: calc(60px * var(--cloud-scale, 1));
   }
 
   .desk-icon-label {

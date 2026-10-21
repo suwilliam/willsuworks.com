@@ -28,6 +28,14 @@ const FALLBACK_SPOTS: Point[] = [
   { x: 86, y: 30 },
 ]
 
+// Each cloud gets its own outline and size, cycling through these.
+const CLOUDS = [
+  { shape: 'puffy', scale: 1 },
+  { shape: 'long', scale: 1.2 },
+  { shape: 'tall', scale: 0.85 },
+  { shape: 'double', scale: 1.1 },
+]
+
 const WINDOW_WIDTH = 380
 // How far the pointer must move before a press counts as a drag, not a click.
 const DRAG_THRESHOLD = 4
@@ -248,7 +256,15 @@ export default function ProjectDesk({
           >
             {/* A cloud: the outer span casts the shadow, the inner one is cut to the
                 cloud's shape (a mask would clip a shadow on the same element). */}
-            <span className="desk-icon-image" style={{ '--bob': `${index}` } as CSSProperties}>
+            <span
+              className={`desk-icon-image cloud-${CLOUDS[index % CLOUDS.length].shape}`}
+              style={
+                {
+                  '--bob': `${index}`,
+                  '--cloud-scale': CLOUDS[index % CLOUDS.length].scale,
+                } as CSSProperties
+              }
+            >
               <span className="desk-icon-cloud">
                 {image ? (
                   <img

@@ -24,7 +24,14 @@ export default function Contact() {
 
   return (
     <div className="page container">
-      <PageHeader eyebrow="Contact" intro={site.contact.intro} />
+      <PageHeader
+        eyebrow="Contact"
+        intro={site.contact.intro}
+        ripple={[
+          { top: '40px', right: '0px', size: 'min(340px, calc(100% - 840px))' },
+          { top: '250px', edge: 'left', size: '240px' },
+        ]}
+      />
 
       <ul className="contact-emails">
         {site.contact.emails.map(({ label, address }) => (

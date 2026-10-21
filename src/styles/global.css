@@ -190,3 +190,10 @@ p {
   white-space: nowrap;
   border: 0;
 }
+
+/* Slow turn for the ripple motif. */
+@keyframes ripple-turn {
+  to {
+    rotate: 360deg;
+  }
+}

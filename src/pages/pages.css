@@ -1,5 +1,8 @@
 /* Shared styles for the inner pages (Tech Experience, Portfolio, Music, Contact). */
 .page {
+  position: relative;
+  /* Ripples can bleed past the column into the screen's margins; the page
+     transition wrapper clips them at the screen edge, so nothing scrolls sideways. */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -319,10 +322,6 @@
   height: 88px;
   border-radius: 50%;
   object-fit: cover;
-  /* A cognac ring, echoing the rings around the homepage photo. */
-  box-shadow:
-    0 0 0 4px var(--color-surface),
-    0 0 0 7px var(--color-accent);
   filter: var(--photo-grade);
 }
 
@@ -435,7 +434,7 @@
   font-variation-settings: var(--display-variation);
   font-weight: var(--display-weight);
   letter-spacing: -0.015em;
-  font-size: clamp(18px, 2.4vw, 22px);
+  font-size: clamp(15px, 1.8vw, 17px);
   color: var(--color-text);
   text-decoration-color: var(--color-line);
   text-underline-offset: 6px;
@@ -468,4 +467,84 @@
 
 .contact-links a:hover {
   color: var(--color-accent);
+}
+
+/* The ripple motif in each page's top-right corner: the same lopsided rings
+   as the homepage photo, opening out from a small centre like a stone
+   dropped in water, very faint and turning slowly. Content sits above it. */
+.page-ripples {
+  /* Position comes from each page (PageHeader's ripple prop). */
+  position: absolute;
+  width: var(--ripple-size);
+  aspect-ratio: 1;
+  /* The same cognac as the rings around the homepage photo. */
+  color: var(--photo-ring-color);
+  pointer-events: none;
+  animation: ripple-turn 140s linear infinite;
+}
+
+.page-ripples svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.page > :not(.page-ripples) {
+  position: relative;
+}
+
+/* Too small to read as a ripple: hide it rather than show a speck. */
+@media (max-width: 1000px) {
+  .page-ripples {
+    display: none;
+  }
+}
+
+/* Left-edge ripples sit in the screen's margin, peeking in past the edge, so
+   they need a wide screen to show enough of themselves. */
+@media (max-width: 1200px) {
+  .page-ripples.is-left-edge {
+    display: none;
+  }
+}
+
+/* Tech Experience: a tiny ripple marks each role's dates. */
+.timeline-years {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+}
+
+.timeline-ripple {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--photo-ring-color);
+}
+
+/* Music: the artist photo gets its own small set of rings. */
+.artist-photo-frame {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 116px;
+  height: 116px;
+}
+
+.artist-photo-ripples {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--photo-ring-color);
+  animation: ripple-turn 60s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-ripples,
+  .artist-photo-ripples {
+    animation: none;
+  }
 }

@@ -31,11 +31,13 @@
   /* Ripple rings around the photo. The padding is the ring band's width and
      must match RING_BAND in src/components/Photo.tsx. */
   --photo-rings: block;
+  /* Every ring on the site (photo, page ripples, date markers) uses this:
+     the same cognac as the links. */
   --photo-ring-color: var(--color-accent);
   --photo-frame-bg: none;
-  --photo-frame-padding: 18%;
+  --photo-frame-padding: 14%;
   /* Wider than the 400px default so the rings don't shrink the photo itself. */
-  --hero-photo-max: 536px;
+  --hero-photo-max: 476px;
   --photo-frame-radius: 0px;
   /* 1 puts the photo after the intro (right side); -1 puts it first. */
   --hero-photo-order: 1;

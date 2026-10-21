@@ -1,6 +1,7 @@
 import ArtistLink from '../components/ArtistLink'
 import { isArtistName } from '../content/artist'
 import PageHeader from '../components/PageHeader'
+import Ripples from '../components/Ripples'
 import SocialIcon from '../components/SocialIcon'
 import { site, type FeaturedTrack } from '../content/site'
 import { usePlayer } from '../player/context'
@@ -16,7 +17,15 @@ export default function Music() {
 
   return (
     <div className="page container">
-      <PageHeader eyebrow="Music" title="Things I've produced" intro={intro} />
+      <PageHeader
+        eyebrow="Music"
+        title="Things I've produced"
+        intro={intro}
+        ripple={[
+          { top: '280px', right: '0px', size: 'min(300px, calc(100% - 840px))' },
+          { top: '620px', edge: 'left', size: '260px' },
+        ]}
+      />
 
       {photo && (
         <figure className="music-photo">
@@ -84,7 +93,18 @@ export default function Music() {
 
       {profile ? (
         <section className="artist-card" aria-label={artist}>
-          <img className="artist-photo" src={profile.image} alt={`${artist} on SoundCloud`} />
+          <span className="artist-photo-frame">
+            <Ripples
+              className="artist-photo-ripples"
+              inner={0.4}
+              band={0.1}
+              count={3}
+              thickness={0.38}
+              stretch={0.3}
+              phase={1.3}
+            />
+            <img className="artist-photo" src={profile.image} alt={`${artist} on SoundCloud`} />
+          </span>
           <div className="artist-text">
             <h2 className="artist-name">
               <ArtistLink name={artist} />

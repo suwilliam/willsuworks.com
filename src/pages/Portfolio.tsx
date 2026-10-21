@@ -9,7 +9,15 @@ import './project.css'
 export default function Portfolio() {
   return (
     <div className="page container portfolio-page">
-      <PageHeader eyebrow="Portfolio" title="Things I've built [WIP]" intro={portfolioIntro} />
+      <PageHeader
+        eyebrow="Portfolio"
+        title="Things I've built [WIP]"
+        intro={portfolioIntro}
+        ripple={[
+          { top: '0px', right: '0px', size: 'min(170px, calc(100% - 676px))' },
+          { top: '320px', edge: 'left', size: '240px' },
+        ]}
+      />
 
       <ProjectDesk projects={projects} backgrounds={deskBackgrounds} />
     </div>
