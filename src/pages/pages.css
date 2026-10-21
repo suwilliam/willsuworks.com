@@ -146,6 +146,33 @@
 }
 
 /* Music */
+/* Studio photo on the Music page: same width as the tracklist, with the
+   site's warm photo grade. */
+.music-photo {
+  margin: 0;
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.music-photo img {
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  /* Keep the laptop and keyboard in frame when the top and bottom are cropped. */
+  object-position: center 54%;
+  border-radius: var(--card-radius);
+  filter: var(--photo-grade);
+}
+
+.music-photo figcaption {
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--color-text-subtle);
+}
+
 .tracklist {
   list-style: none;
   margin: 0;

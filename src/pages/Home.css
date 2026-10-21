@@ -23,6 +23,7 @@
 /* The intro lines line up on the right edge with the heading. */
 .hero-text > p.muted {
   text-align: right;
+  font-weight: 600;
 }
 
 /* "Based in NYC": sits snug under the heading, lined up on its right edge. */

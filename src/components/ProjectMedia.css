@@ -23,7 +23,7 @@
 
 .media figcaption {
   color: var(--color-text-subtle);
-  font-size: var(--text-small);
+  font-size: 14px;
 }
 
 .media-zoom {
@@ -34,6 +34,26 @@
   border-radius: 12px;
   background: none;
   cursor: zoom-in;
+}
+
+/* Gallery: screenshots side by side, top-aligned. */
+.media-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+  align-items: start;
+  gap: 12px;
+}
+
+/* One column: snippets stacked, in a narrower column so text stays phone-sized. */
+.media-gallery-grid.is-stacked {
+  max-width: 520px;
+}
+
+@media (max-width: 560px) {
+  .media-gallery-grid {
+    grid-template-columns: repeat(min(var(--count), 2), minmax(0, 1fr));
+    max-width: none;
+  }
 }
 
 /* An empty slot: a dashed box naming what goes there. */

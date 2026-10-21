@@ -1,4 +1,5 @@
 import PageHeader from '../components/PageHeader'
+import RichText from '../components/RichText'
 import SocialIcon from '../components/SocialIcon'
 import { site, type Org } from '../content/site'
 import './pages.css'
@@ -64,7 +65,11 @@ export default function Work() {
                   </span>
                 ))}
               </p>
-              {role.summary && <p className="muted">{role.summary}</p>}
+              {role.summary && (
+                <p className="muted">
+                  <RichText text={role.summary} />
+                </p>
+              )}
             </div>
           </li>
         ))}

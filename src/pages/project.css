@@ -1,82 +1,3 @@
-/* Portfolio grid */
-.projects {
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-}
-
-.project-card {
-  display: flex;
-}
-
-.project-card-link {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--card-radius);
-  background: var(--color-surface);
-  color: inherit;
-  text-decoration: none;
-  transition:
-    translate 200ms ease,
-    box-shadow 200ms ease;
-}
-
-.project-card-link:hover {
-  color: inherit;
-  translate: 0 -4px;
-  box-shadow: 0 14px 28px -14px rgba(42, 26, 16, 0.45);
-}
-
-.project-card-cover {
-  aspect-ratio: 16 / 10;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: var(--photo-placeholder);
-}
-
-.project-card-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: scale 300ms ease;
-}
-
-.project-card-link:hover .project-card-cover img {
-  scale: 1.03;
-}
-
-.project-card-cover-empty {
-  color: var(--color-text-muted);
-  font-size: var(--text-small);
-}
-
-.project-card-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  padding: var(--space-m);
-}
-
-.project-card-meta {
-  color: var(--color-text-subtle);
-  font-size: var(--text-small);
-}
-
-.project-card-more {
-  margin-top: auto;
-  padding-top: var(--space-xs);
-  color: var(--color-accent);
-  font-size: var(--text-small);
-  font-weight: 600;
-}
-
-.project-card-link:hover .project-card-more {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
 .project-tags {
   list-style: none;
   margin: 0;
@@ -117,7 +38,7 @@
 }
 
 .project-header .muted {
-  font-size: var(--text-lead);
+  font-size: 18px;
 }
 
 .project-body {
@@ -140,7 +61,7 @@
 }
 
 .project-glance h2 {
-  font-size: var(--text-lead);
+  font-size: 18px;
 }
 
 .project-glance dl {
@@ -160,7 +81,7 @@
 
 .project-glance dd {
   margin: 2px 0 0;
-  font-size: var(--text-small);
+  font-size: 14px;
 }
 
 .project-glance dd .project-tags {
@@ -180,6 +101,7 @@
   flex-direction: column;
   gap: var(--space-l);
   max-width: 720px;
+  font-size: 16px;
 }
 
 /* Impact: the headline numbers, big. */
@@ -202,13 +124,13 @@
 
 .project-impact-value {
   font-family: var(--font-display);
-  font-size: 40px;
+  font-size: 24px;
   line-height: 1.05;
 }
 
 .project-impact-label {
   color: var(--color-text-muted);
-  font-size: var(--text-small);
+  font-size: 14px;
 }
 
 .project-section {
@@ -218,7 +140,7 @@
 }
 
 .project-section h2 {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .project-section .media {
@@ -258,7 +180,7 @@
 
 .project-pager-title {
   font-family: var(--font-display);
-  font-size: var(--text-lead);
+  font-size: 18px;
 }
 
 .project-pager-link:hover {

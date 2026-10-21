@@ -13,7 +13,25 @@ export type Media =
   /** A screenshot, design or photo. Click to view full size. */
   | { kind: 'image'; src: string; alt: string; caption?: string }
   /** A short screen recording (.mp4). Better than a GIF: smaller and sharper. */
-  | { kind: 'video'; src: string; alt: string; caption?: string; poster?: string }
+  | {
+      kind: 'video'
+      src: string
+      alt: string
+      caption?: string
+      poster?: string
+      /** Plays silently on a loop as soon as it's on screen, like a live demo. */
+      autoplay?: boolean
+      /** Caps the video's width in px (it's centred); otherwise it fills the column. */
+      maxWidth?: number
+    }
+  /** Several images side by side, like phone screenshots. Each opens full size. */
+  | {
+      kind: 'gallery'
+      images: { src: string; alt: string }[]
+      caption?: string
+      /** How many across (default: up to 3). 1 stacks them in a narrower column. */
+      columns?: number
+    }
   /** A Figma prototype or file. Use the link from Figma's Share → Copy link. */
   | { kind: 'figma'; url: string; alt: string; caption?: string }
 
@@ -28,13 +46,25 @@ export type Project = {
   /** The page address: /portfolio/<slug>. Lowercase words joined by dashes. */
   slug: string
   title: string
-  /** What you did and why it mattered, in one line. Shown on the card and page. */
+  /** What you did and why it mattered, in one line. Shown on the card and page.
+      Write [words](https://…) for a link (on the page; the card shows plain text). */
   oneLiner: string
   year: string
   role: string
   tags: string[]
-  /** 16:10 works best. Shown on the card and at the top of the page. */
-  cover: { src: string; alt: string }
+  /** 16:10 works best. Shown on the desk and at the top of the page. */
+  /** maxWidth (in px) shows it smaller and centred at the top of the page. */
+  cover: { src: string; alt: string; maxWidth?: number }
+  /** Optional: shown at the top of the page instead of the cover, e.g. a demo video. */
+  hero?: Media
+  /**
+   * Its icon on the Portfolio desk. x and y are where it starts, in percent
+   * across and down the desk (visitors can drag it from there). icon is an
+   * optional square thumbnail; without one it uses the cover, then a letter.
+   * Set iconIsLogo for a logo on a white background: it's shown whole in the
+   * middle of the cloud, with the white blended away, instead of filling it.
+   */
+  desk?: { x: number; y: number; icon?: string; iconIsLogo?: boolean }
   glance: {
     team?: string
     timeline?: string
@@ -48,27 +78,58 @@ export type Project = {
   learned?: string
 }
 
+/**
+ * Photos and clips behind the Portfolio desk; each visit shows one at random.
+ * position is the part kept in view (CSS background-position): the second
+ * number lower shows more sky, higher shows more ground. For a clip, set
+ * video to a short, silent .mp4 in public/videos; it plays on a loop like a
+ * GIF, and src is a still from it shown while it loads (and to visitors who
+ * turn off motion).
+ */
+export const deskBackgrounds: { src: string; position: string; video?: string }[] = [
+  { src: '/images/backgrounds/burning-man-sunset.jpg', position: '50% 36%' },
+  { src: '/images/backgrounds/montauk-sunset.jpg', position: '50% 38%' },
+  { src: '/images/backgrounds/nyc-sunset.jpg', position: '50% 42%' },
+  { src: '/images/backgrounds/tempelhof-sunset.jpg', position: '50% 55%' },
+  {
+    src: '/images/backgrounds/kauai-surfing-poster.jpg',
+    video: '/images/backgrounds/kauai-surfing.mp4',
+    position: '50% 50%',
+  },
+]
+
 export const portfolioIntro =
-  'A few things I helped build, from enterprise developer tools to my own startups.'
+  "From enterprise developer tools to my own projects and startups. I'm still adding things!"
 
 export const projects: Project[] = [
   {
     slug: 'retool-record-and-replay',
-    title: 'Record & Replay Testing',
+    desk: {
+      x: 24,
+      y: 30,
+      icon: '/images/projects/retool-record-and-replay/retool-logo.svg',
+      iconIsLogo: true,
+    },
+    title: 'Record & Replay App Testing',
     oneLiner:
-      "Took Retool's record-and-replay testing platform from zero to one, through to early adoption across ~15 enterprise accounts.",
-    year: '[2024]',
-    role: 'Senior Product Engineer / Acting PM',
+      "Took [Retool](https://retool.com)'s record-and-replay testing platform from 0 → 1, through to early adoption across ~15 enterprise accounts.",
+    year: '2025',
+    role: 'Senior Product Engineer',
     tags: ['Retool', '0 → 1', 'Developer tools'],
     cover: { src: '', alt: 'Cover: the record-and-replay testing interface' },
-    glance: {
-      team: '10-person cross-functional team ([e.g. 1 designer, 6 engineers, QA, GTM])',
-      timeline: '[e.g. 9 months, 2024–2025]',
-      tools: ['[React]', '[TypeScript]', '[Node.js]', 'Figma'],
+    hero: {
+      kind: 'video',
+      src: '/images/projects/retool-record-and-replay/demo.mp4',
+      alt: 'Demo: recording a test in Retool, then replaying it',
+      autoplay: true,
+      maxWidth: 720,
     },
-    links: [{ label: 'Retool', href: 'https://retool.com' }],
+    glance: {
+      team: '10-person cross-functional team (1 PM, 1 designer, 7 engineers, GTM Enablement)',
+      timeline: '1 year, 2024 – 2025',
+      tools: ['Typescript', 'Node.js', 'Figma', 'Linear', 'FullStory'],
+    },
     impact: [
-      { value: '0 → 1', label: 'MVP to early adoption' },
       { value: '~15', label: 'enterprise accounts' },
       { value: '$10M+', label: 'in ARR across those accounts' },
     ],
@@ -76,22 +137,22 @@ export const projects: Project[] = [
       {
         heading: 'The problem',
         body: [
-          "[Who struggled and with what. For example: teams building critical internal tools on Retool had no easy way to check that a change didn't break their apps, so they tested by hand or not at all.]",
-          '[How you knew: support tickets, customer calls, churn reasons or usage data. One concrete example or number helps.]',
+          'Teams using Retool have no way of testing their apps natively. They would rely on a range of approaches depending on their risk tolerance such as Web-driver based frameworks (e.g. Playwright, Cypress, Selenium) or manual testing.',
+          'How we knew: support tickets feature requests, customer calls with 5+ customers, churn reasons',
         ],
       },
       {
         heading: 'My role',
         body: [
-          'I defined and prioritized the MVP roadmap, designed the prototype and the user experience, set the technical architecture, and led development across a 10-person cross-functional team.',
-          '[What you owned yourself versus what the team did. Recruiters look for this.]',
+          'I was the first product engineer on the team, defining and prioritizing the MVP roadmap with the PM. I designed and proposed the initial prototype and the user experience, co-developed the technical architecture, and became the team lead when the team expanded.',
         ],
       },
       {
         heading: 'Approach and key decisions',
         body: [
-          '[Decision 1: the options you weighed, what you chose and why. For example: recording real user sessions versus asking builders to write tests.]',
-          '[Decision 2: a trade-off you made to ship the MVP sooner.]',
+          'Decision 1: User records actions rather than manually building tests',
+          'Decision 2: Mocking time stamps',
+          'Decision 2: Simplifying tests and removing complexity',
         ],
         media: [
           {
@@ -134,22 +195,22 @@ export const projects: Project[] = [
   },
   {
     slug: 'chem',
+    desk: { x: 62, y: 22 },
     title: 'Chem',
     oneLiner:
-      'Co-founded an AI matchmaking app that plans small in-person group events, and built the AI-agent prototype as CTO.',
-    year: '2025–2026',
+      'Briefly co-founded an AI-agent matchmaking app prototype that plans small in-person group events.',
+    year: '2025 – 2026',
     role: 'CTO Co-founder',
     tags: ['Startup', 'AI agents', 'Consumer'],
     cover: { src: '', alt: 'Cover: the Chem app' },
     glance: {
-      team: '[e.g. 2 co-founders, with relationship-science PhD advisors]',
+      team: '2 co-founders, with relationship-science PhD advisors',
       timeline: 'Oct 2025 – Mar 2026',
-      tools: ['[e.g. Claude]', '[React Native]', '[Python]'],
+      tools: ['Claude', 'React Native', 'Python'],
     },
     impact: [
       { value: '50+', label: 'customer interviews' },
       { value: '50+', label: 'LGBTQ+ users in the prototype' },
-      { value: '6', label: 'people per personalized group event' },
     ],
     sections: [
       {
@@ -206,6 +267,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'passionfruit',
+    desk: { x: 38, y: 68, icon: '/images/projects/passionfruit/logo.jpg', iconIsLogo: true },
     title: 'Passionfruit',
     oneLiner:
       'Co-founded a platform for musicians to share work in progress, launched in 2 months and grew to 200+ weekly users.',
@@ -264,54 +326,144 @@ export const projects: Project[] = [
   },
   {
     slug: 'exie',
+    desk: { x: 76, y: 62, icon: '/images/projects/exie/badge.svg', iconIsLogo: true },
     title: 'Exie',
     oneLiner:
-      '[What Exie is and why it matters, in one line. For example: a WhatsApp assistant that …]',
-    year: '[2026]',
-    role: '[Your role]',
-    tags: ['WhatsApp', '[AI]', '[Side project]'],
-    cover: { src: '', alt: 'Cover: Exie in a WhatsApp chat' },
-    glance: {
-      team: '[Solo, or who you worked with]',
-      timeline: '[e.g. 3 weeks]',
-      tools: ['WhatsApp', '[e.g. Claude]', '[e.g. Node.js]'],
+      "A WhatsApp bot that answers my cohort's homework questions, pulling straight from our CourseWorks classes.",
+    year: '2026',
+    role: 'Solo builder',
+    tags: ['WhatsApp', 'AI agent', 'Side project'],
+    cover: {
+      src: '/images/projects/exie/cover.jpg',
+      alt: 'Exie answering a classmate in the cohort WhatsApp chat',
+      maxWidth: 560,
     },
-    links: [{ label: '[Try it]', href: '#' }],
+    glance: {
+      team: 'Just me',
+      timeline: '1 week for the first version, still updating it',
+      tools: [
+        'JavaScript (Node.js)',
+        'Baileys',
+        'Gemini',
+        'Vertex AI',
+        'Canvas API',
+        'Google Cloud',
+      ],
+    },
+    links: [{ label: 'GitHub', href: 'https://github.com/suwilliam/courseworks-whatsapp-bot' }],
     impact: [
-      { value: '[#]', label: '[users or messages]' },
-      { value: '[#]', label: '[a second result]' },
+      { value: '~50', label: 'classmates in the group chat' },
+      { value: 'Daily', label: 'someone asks Exie something' },
+      { value: '1 week', label: 'to build the first version' },
     ],
     sections: [
       {
         heading: 'The problem',
-        body: ["[Who it's for and what it solves.]"],
+        body: [
+          "Our cohort has a WhatsApp chat just for homework, and it was mostly the same few questions on repeat. Is there reading for Tuesday? Is anything due tomorrow? Where's the stats homework? The answers were spread across all our courses on CourseWorks, and some only showed up in a lecture slide, so even people who went looking sometimes got it wrong.",
+          "I wasn't any better. Every week I'd click through each of my courses trying to piece together what was due and when, and I'd still miss things.",
+        ],
+        media: [
+          {
+            kind: 'gallery',
+            columns: 1,
+            images: [
+              {
+                src: '/images/projects/exie/problem1.jpg',
+                alt: 'A classmate asking if there is reading or homework for Tuesday',
+              },
+              {
+                src: '/images/projects/exie/problem2.jpg',
+                alt: 'Asking whether any homework is due tomorrow, with an unclear reply',
+              },
+              {
+                src: '/images/projects/exie/problem3.jpg',
+                alt: 'Classmates asking where the statistics homework is',
+              },
+            ],
+            caption: 'The homework chat before Exie (names blurred).',
+          },
+        ],
       },
       {
         heading: 'My role',
-        body: ['[What you did.]'],
+        body: [
+          "I built it on my own in about a week. I'd noticed how much of the chat was these questions and figured a bot could answer most of them.",
+          "It's still a work in progress. Classmates DM me ideas and bugs, and I keep adding to it.",
+        ],
       },
       {
         heading: 'Approach and key decisions',
-        body: ['[Why WhatsApp, and one or two other decisions.]'],
+        body: [
+          "I put it in WhatsApp because that's where everyone already was. There was no point making people download something new when the homework chat already existed. You just start a message with @exie.",
+          "I also wanted it to cost next to nothing, since everyone using it is a student, me included. It runs on a free Google Cloud server, and I used Baileys to connect to WhatsApp because it's light on memory. The answers come from Gemini's free tier. When the free models are busy it falls back to Vertex AI, which is paid, so I capped how much of that it can use in a day.",
+          "The hardest part was WhatsApp itself. There's no official way to run a bot in a group chat, so I had to build that piece myself and be careful about how Exie sends messages, or WhatsApp would flag the number as a bot and shut it down.",
+        ],
+        media: [
+          {
+            kind: 'gallery',
+            columns: 2,
+            images: [
+              {
+                src: '/images/projects/exie/intro.jpg',
+                alt: 'Introducing Exie in the cohort homework chat',
+              },
+            ],
+            caption:
+              "My message introducing Exie. I asked everyone to keep questions in the group so WhatsApp wouldn't flag her as a bot.",
+          },
+        ],
       },
       {
         heading: 'The solution',
-        body: ["[How it works, from the user's side.]"],
+        body: [
+          'Say someone types "@exie what\'s the homework for this week?" Exie goes into CourseWorks, uses Gemini to work out which assignments and pages matter, and replies with everything due that week, grouped by class. We all take the same classes, so one answer covers everyone.',
+          'People also ask it about readings, exam dates, the syllabus and office hours. It remembers the last few messages too, so you can follow up with something like "when is that due?"',
+        ],
         media: [
           {
             kind: 'video',
-            src: '',
-            alt: 'Screen recording of a conversation with Exie',
-            caption: '[A short recording of a real conversation.]',
+            src: '/images/projects/exie/demo.mp4',
+            alt: 'Screen recording of asking Exie a question in WhatsApp',
+            caption: 'Asking Exie what the UI/UX homework is this week.',
+            autoplay: true,
+            maxWidth: 360,
+          },
+          {
+            kind: 'gallery',
+            columns: 2,
+            images: [
+              {
+                src: '/images/projects/exie/solution1.jpg',
+                alt: "Exie listing this week's homework by class",
+              },
+              {
+                src: '/images/projects/exie/solution2.jpg',
+                alt: 'Exie estimating how long a design homework will take, from the PDF instructions',
+              },
+              {
+                src: '/images/projects/exie/solution3.jpg',
+                alt: "Exie listing next week's readings by class",
+              },
+              {
+                src: '/images/projects/exie/solution4.jpg',
+                alt: "Exie finding this week's entrepreneurship readings in the syllabus",
+              },
+            ],
+            caption: 'A few real questions from classmates (names blurred).',
           },
         ],
       },
       {
         heading: 'Results',
-        body: ['[What happened.]'],
+        body: [
+          'About 50 classmates are in the chat, and someone asks Exie a question every day.',
+          "Most of what I've added since came from them. A lot of homework only lives in lecture slides, so people asked if Exie could read those, images included. Now it does, and every 6 hours it re-indexes any new slides so it can find things quickly.",
+        ],
       },
     ],
-    learned: '[What you learned.]',
+    learned:
+      "Simple tools can make a real difference to people's week. I didn't expect to get this many thank-yous for a homework bot.",
   },
 ]
 

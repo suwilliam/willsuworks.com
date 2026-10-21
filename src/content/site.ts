@@ -67,6 +67,8 @@ export type SiteContent = {
     artist: string
     /** The artist card under the tracklist. */
     profile?: { image: string; tagline?: string; url: string }
+    /** A wide photo between the intro and the tracklist. */
+    photo?: { src: string; alt: string; caption?: string }
     tracks: Track[]
   }
   contact: {
@@ -92,7 +94,7 @@ export const site: SiteContent = {
       'Building [cool things](/portfolio) and getting [two master degrees](/tech) at Columbia',
     ],
     photo: {
-      src: '/images/profile.jpg',
+      src: '/images/profile/profile.jpg',
       alt: 'Will smiling on a rooftop in Amsterdam at sunset',
       position: '60% 37%',
       zoom: 1.4,
@@ -157,10 +159,15 @@ export const site: SiteContent = {
 
   music: {
     intro: 'I make music in Ableton and DJ house and jazz sometimes. Here are a couple of tracks I made.',
+    photo: {
+      src: '/images/music/music-production-cafe.jpg',
+      alt: 'A laptop running Ableton, an Akai MPK mini keyboard and headphones on a sunny café window counter',
+      caption: 'Ableton, an MPK mini and a sunny window seat at a cafe.',
+    },
     outro: 'My first EP under my artist project name *will in space* is in the works.',
     artist: 'will in space',
     profile: {
-      image: '/images/will-in-space.jpg',
+      image: '/images/profile/will-in-space.jpg',
       url: 'https://soundcloud.com/willinspace',
     },
     tracks: [

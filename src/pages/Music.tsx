@@ -11,12 +11,19 @@ import './pages.css'
 // the bottom), so the music keeps going while visitors look around. The small
 // SoundCloud icon opens the track on SoundCloud instead.
 export default function Music() {
-  const { intro, outro, artist, profile, tracks } = site.music
+  const { intro, outro, artist, profile, photo, tracks } = site.music
   const player = usePlayer()
 
   return (
     <div className="page container">
       <PageHeader eyebrow="Music" title="Things I've produced" intro={intro} />
+
+      {photo && (
+        <figure className="music-photo">
+          <img src={photo.src} alt={photo.alt} />
+          {photo.caption && <figcaption>{photo.caption}</figcaption>}
+        </figure>
+      )}
 
       <ul className="tracklist">
         {tracks.map((track, index) => {

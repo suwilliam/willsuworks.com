@@ -1,14 +1,50 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import type { Media } from '../content/projects'
 import './ProjectMedia.css'
 
 // One image, video or Figma prototype, with its caption. Media without a
 // source shows a labelled placeholder, so empty slots are easy to spot.
-export function MediaFigure({ media, onOpen }: { media: Media; onOpen?: () => void }) {
+export function MediaFigure({
+  media,
+  onOpen,
+}: {
+  media: Media
+  /** Opens the full-size viewer on the image with this src. */
+  onOpen?: (src: string) => void
+}) {
+  if (media.kind === 'gallery') {
+    return (
+      <figure className="media media-gallery">
+        <div
+          className={`media-gallery-grid${media.columns === 1 ? ' is-stacked' : ''}`}
+          style={{ '--count': media.columns ?? Math.min(media.images.length, 3) } as CSSProperties}
+        >
+          {media.images.map((image) => (
+            <button
+              key={image.src}
+              type="button"
+              className="media-zoom"
+              onClick={() => onOpen?.(image.src)}
+              aria-label={`View larger: ${image.alt}`}
+            >
+              <img src={image.src} alt={image.alt} loading="lazy" />
+            </button>
+          ))}
+        </div>
+        {media.caption && <figcaption>{media.caption}</figcaption>}
+      </figure>
+    )
+  }
+
   const source = media.kind === 'figma' ? media.url : media.src
+  // A video can ask to be shown smaller and centred, e.g. a phone recording.
+  const maxWidth = media.kind === 'video' ? media.maxWidth : undefined
 
   return (
-    <figure className={`media media-${media.kind}`}>
+    <figure
+      className={`media media-${media.kind}`}
+      style={maxWidth ? { width: '100%', maxWidth, marginInline: 'auto' } : undefined}
+    >
       {!source ? (
         <div className="media-placeholder">
           <span className="media-placeholder-kind">
@@ -24,13 +60,23 @@ export function MediaFigure({ media, onOpen }: { media: Media; onOpen?: () => vo
         <button
           type="button"
           className="media-zoom"
-          onClick={onOpen}
+          onClick={() => onOpen?.(media.src)}
           aria-label={`View larger: ${media.alt}`}
         >
           <img src={media.src} alt={media.alt} loading="lazy" />
         </button>
       ) : media.kind === 'video' ? (
-        <video src={media.src} poster={media.poster} controls muted playsInline preload="metadata">
+        <video
+          src={media.src}
+          poster={media.poster}
+          controls
+          muted
+          playsInline
+          autoPlay={media.autoplay}
+          loop={media.autoplay}
+          preload={media.autoplay ? 'auto' : 'metadata'}
+          aria-label={media.alt}
+        >
           {media.alt}
         </video>
       ) : (

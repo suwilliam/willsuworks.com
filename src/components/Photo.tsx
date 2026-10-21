@@ -10,19 +10,25 @@ type PhotoProps = {
 // Ripple border: concentric rings around the photo that drift from a circle
 // near the photo into a looser, lopsided shape at the outside, like op-art
 // or tree rings. Shown when a theme sets --photo-rings: block.
-// RING_BAND must match the theme's --photo-frame-padding (14% = 0.14): it is
+// RING_BAND must match the theme's --photo-frame-padding (18% = 0.18): it is
 // the share of the frame's width on each side that the rings fill.
-const RING_BAND = 0.14
+const RING_BAND = 0.18
 const RING_COUNT = 4
 // How much the ring spacing varies around the photo (0 = perfect circles).
 const RING_STRETCH = 0.35
+// Each ring's thickness as a share of the distance from one ring to the next
+// (0.5 = stripe and gap the same width; smaller = thinner rings).
+const RING_THICKNESS = 0.32
 
 function ringPath() {
   const inner = 0.5 - RING_BAND
-  // Each ring is a stripe and a gap of equal width, so 2 edges per ring.
-  // Edge 0 sits exactly on the photo's circle, so the first stripe hugs it.
-  const edges = RING_COUNT * 2
-  const step = RING_BAND / ((edges - 1) * (1 + RING_STRETCH))
+  // Each ring has an inner and an outer edge, one pitch apart from the next
+  // ring. The first ring's inner edge sits exactly on the photo's circle.
+  const pitch = RING_BAND / ((RING_COUNT - 1 + RING_THICKNESS) * (1 + RING_STRETCH))
+  const edges = Array.from({ length: RING_COUNT }, (_, ring) => [
+    ring * pitch,
+    (ring + RING_THICKNESS) * pitch,
+  ]).flat()
   const steps = 240
   // A few slow waves of different sizes make the spacing wider on some sides,
   // so the rings start almost round and grow lopsided toward the outside.
@@ -30,12 +36,12 @@ function ringPath() {
     (0.57 * Math.sin(2 * angle + 0.6) + 0.34 * Math.sin(3 * angle + 2.1) + 0.09 * Math.sin(5 * angle + 0.3)) *
     RING_STRETCH
 
-  // Edges 0–1, 2–3, … bound the stripes; the even-odd fill rule fills
-  // between each pair and leaves the gaps empty.
-  return Array.from({ length: edges }, (_, edge) => {
+  // Each pair of edges bounds a ring; the even-odd fill rule fills between
+  // each pair and leaves the gaps empty.
+  return edges.map((offset) => {
     const points = Array.from({ length: steps }, (_, j) => {
       const angle = (j / steps) * Math.PI * 2
-      const r = (inner + edge * step * (1 + stretch(angle))) * 100
+      const r = (inner + offset * (1 + stretch(angle))) * 100
       return `${(50 + r * Math.cos(angle)).toFixed(2)} ${(50 + r * Math.sin(angle)).toFixed(2)}`
     })
     return `M${points.join('L')}Z`

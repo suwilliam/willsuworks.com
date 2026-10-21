@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Full-size originals, straight from the phone. They carry GPS location and
+# unblurred names, so they stay local; the site uses the copies in public/.
+/originals/

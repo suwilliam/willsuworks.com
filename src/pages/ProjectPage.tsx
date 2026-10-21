@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import RichText from '../components/RichText'
 import { Lightbox, MediaFigure, type LightboxImage } from '../components/ProjectMedia'
 import { findProject, projects, type Media } from '../content/projects'
 import NotFound from './NotFound'
@@ -39,16 +40,15 @@ export default function ProjectPage() {
   const cover: Media = { kind: 'image', ...project.cover }
   // Every image on the page that has a file, in order, for the full-size viewer.
   const allMedia = [cover, ...project.sections.flatMap((section) => section.media ?? [])]
-  const images = allMedia.filter(
-    (media): media is Extract<Media, { kind: 'image' }> => media.kind === 'image' && !!media.src,
+  const lightboxImages: LightboxImage[] = allMedia.flatMap((media): LightboxImage[] =>
+    media.kind === 'image' && media.src
+      ? [{ src: media.src, alt: media.alt, caption: media.caption }]
+      : media.kind === 'gallery'
+        ? media.images.map((image) => ({ ...image, caption: media.caption }))
+        : [],
   )
-  const lightboxImages: LightboxImage[] = images.map(({ src, alt, caption }) => ({
-    src,
-    alt,
-    caption,
-  }))
-  const openViewer = (media: Media) => () =>
-    setViewing(images.indexOf(media as (typeof images)[number]))
+  const openViewer = (src: string) =>
+    setViewing(lightboxImages.findIndex((image) => image.src === src))
 
   const { glance } = project
 
@@ -63,16 +63,26 @@ export default function ProjectPage() {
           {project.role} · {project.year}
         </div>
         <h1>{project.title}</h1>
-        <p className="muted">{project.oneLiner}</p>
+        <p className="muted">
+          <RichText text={project.oneLiner} />
+        </p>
       </header>
 
-      <div className="project-cover">
-        <MediaFigure media={cover} onOpen={openViewer(cover)} />
+      <div
+        className="project-cover"
+        style={(() => {
+          // A video hero or the cover can ask to be shown smaller, centred.
+          const maxWidth =
+            project.hero?.kind === 'video' ? project.hero.maxWidth : project.cover.maxWidth
+          return maxWidth ? { width: '100%', maxWidth, marginInline: 'auto' } : undefined
+        })()}
+      >
+        <MediaFigure media={project.hero ?? cover} onOpen={openViewer} />
       </div>
 
       <div className="project-body">
-        <aside className="project-glance" aria-label="At a glance">
-          <h2>At a glance</h2>
+        <aside className="project-glance" aria-label="Overview">
+          <h2>Overview</h2>
           <dl>
             <div>
               <dt>Role</dt>
@@ -133,7 +143,7 @@ export default function ProjectPage() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
               {section.media?.map((media, mediaIndex) => (
-                <MediaFigure key={mediaIndex} media={media} onOpen={openViewer(media)} />
+                <MediaFigure key={mediaIndex} media={media} onOpen={openViewer} />
               ))}
             </section>
           ))}

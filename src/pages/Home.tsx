@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import ArtistLink from '../components/ArtistLink'
-import { Link } from 'react-router-dom'
 import Photo from '../components/Photo'
+import RichText from '../components/RichText'
 import { site, type FeaturedTrack } from '../content/site'
 import { usePlayer, type Player } from '../player/context'
 import PlayPauseIcon from '../player/PlayPauseIcon'
@@ -37,7 +37,7 @@ export default function Home() {
         )}
         {intro.map((paragraph) => (
           <p key={paragraph} className="muted">
-            {withLinks(paragraph)}
+            <RichText text={paragraph} />
           </p>
         ))}
       </div>
@@ -103,23 +103,6 @@ function PlayablePhoto({
   )
 }
 
-// Turns [words](/page) into links: site pages open in place, websites in a new tab.
-function withLinks(text: string) {
-  const parts = text.split(/\[([^\]]+)\]\(([^)]+)\)/)
-  return parts.map((part, index) => {
-    if (index % 3 !== 1) return index % 3 === 0 ? part : null
-    const href = parts[index + 1]
-    return href.startsWith('/') ? (
-      <Link key={index} to={href}>
-        {part}
-      </Link>
-    ) : (
-      <a key={index} href={href} target="_blank" rel="noreferrer">
-        {part}
-      </a>
-    )
-  })
-}
 
 // The name rides an ocean swell: the letters rise and fall in a wave that
 // rolls across from left to right. Screen readers get the plain name.
