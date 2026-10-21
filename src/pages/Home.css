@@ -2,7 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-xl);
+  /* The rings already add space around the photo, so the gap to the text is small. */
+  gap: var(--space-m);
   padding-block: 40px 96px;
 }
 
@@ -24,6 +25,11 @@
 .hero-text > p.muted {
   text-align: right;
   font-weight: 600;
+}
+
+/* The intro sits close under the location line, reading as one block. */
+.hero-based + p.muted {
+  margin-top: calc(-1 * var(--space-s));
 }
 
 /* "Based in NYC": sits snug under the heading, lined up on its right edge. */
@@ -76,6 +82,16 @@
 
   .hero-based {
     justify-content: center;
+  }
+
+  .track-caption {
+    align-items: center;
+    text-align: center;
+  }
+
+  /* The photo is below on phones, so the arrow points down. */
+  .track-caption-arrow {
+    rotate: 90deg;
   }
 }
 
@@ -151,18 +167,41 @@
   }
 }
 
+/* The track line, in the text column under the intro: a small label with an
+   arrow toward the photo, then the track name. Right-aligned like the rest. */
 .track-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-top: var(--space-xs);
   font-size: var(--text-small);
   color: var(--color-text-subtle);
-  text-align: center;
+  text-align: right;
 }
 
 .track-caption-label {
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-accent);
+}
+
+.track-caption-arrow {
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.track-caption a {
+  text-decoration: none;
+}
+
+.track-caption a:hover {
+  text-decoration: underline;
 }
 
 /* The ripple rings slowly turn all the time, like a record on the platter,
@@ -291,7 +330,9 @@
 .film-title-letter {
   display: inline-block;
   animation: film-swell 8s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 260ms - 8s);
+  /* Timed by horizontal position (--x, set in Home.tsx), so every line rides
+     the same wave: 4ms later for each pixel to the right. */
+  animation-delay: calc(var(--x, 0) * 4ms - 8s);
 }
 
 @keyframes film-swell {
@@ -301,7 +342,7 @@
     rotate: 0deg;
   }
   25% {
-    translate: 0 -0.04em;
+    translate: 0 -2.6px;
     rotate: -1.5deg;
   }
   50% {
@@ -309,7 +350,7 @@
     rotate: 0deg;
   }
   75% {
-    translate: 0 0.025em;
+    translate: 0 1.6px;
     rotate: 1.5deg;
   }
 }
@@ -323,31 +364,12 @@
   stroke: var(--color-accent);
 }
 
-/* The same swell for the smaller line under the name. Movement is measured
-   in em (relative to the text size), so this line needs bigger values than
-   the name to move a similar distance on screen. */
-.wave-gentle .film-title-letter {
-  animation-name: film-swell-gentle;
-}
+/* Every wavy line uses the same swell, measured in pixels so letters of
+   any size move by exactly the same amount. */
 
-@keyframes film-swell-gentle {
-  0%,
-  100% {
-    translate: 0 0;
-    rotate: 0deg;
-  }
-  25% {
-    translate: 0 -0.12em;
-    rotate: -3deg;
-  }
-  50% {
-    translate: 0 0;
-    rotate: 0deg;
-  }
-  75% {
-    translate: 0 0.07em;
-    rotate: 3deg;
-  }
+/* Links in the wavy intro: no underline; their cognac colour marks them. */
+.wave-gentle a {
+  text-decoration: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

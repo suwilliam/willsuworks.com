@@ -11,6 +11,7 @@ type Widget = {
   toggle(): void
   play(): void
   pause(): void
+  setVolume(volume: number): void
   load(url: string, options: Record<string, unknown> & { callback?: () => void }): void
   seekTo(milliseconds: number): void
   getDuration(callback: (milliseconds: number) => void): void
@@ -50,9 +51,12 @@ function loadApi(): Promise<SoundCloudApi> {
   return apiLoading
 }
 
-export function useSoundCloud(trackUrl: string) {
+// volume (0–100) applies to whatever is playing and is re-applied each time
+// a track starts, since SoundCloud can reset it when a new track loads.
+export function useSoundCloud(trackUrl: string, volume = 100) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const widgetRef = useRef<Widget | null>(null)
+  const volumeRef = useRef(volume)
   const [ready, setReady] = useState(false)
   const [playing, setPlaying] = useState(false)
   /** True once the track has played at least once. */
@@ -74,6 +78,7 @@ export function useSoundCloud(trackUrl: string) {
         events = [READY, PLAY, PAUSE, FINISH, PLAY_PROGRESS]
         widget.bind(READY, readDuration)
         widget.bind(PLAY, () => {
+          widget.setVolume(volumeRef.current)
           setPlaying(true)
           setStarted(true)
           readDuration()
@@ -96,6 +101,11 @@ export function useSoundCloud(trackUrl: string) {
       widgetRef.current = null
     }
   }, [trackUrl])
+
+  useEffect(() => {
+    volumeRef.current = volume
+    widgetRef.current?.setVolume(volume)
+  }, [volume])
 
   const toggle = useCallback(() => widgetRef.current?.toggle(), [])
   // Swaps in another track and starts it. SoundCloud keeps the event

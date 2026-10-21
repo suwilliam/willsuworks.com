@@ -19,6 +19,7 @@ export default function PlayerProvider({
 
 function ActivePlayer({ track, children }: { track: FeaturedTrack; children: ReactNode }) {
   // The widget starts on the featured track; play() can swap in others.
+  const [current, setCurrent] = useState(track)
   const {
     iframeRef,
     embedSrc,
@@ -31,8 +32,7 @@ function ActivePlayer({ track, children }: { track: FeaturedTrack; children: Rea
     load,
     pause,
     seek,
-  } = useSoundCloud(track.url)
-  const [current, setCurrent] = useState(track)
+  } = useSoundCloud(track.url, current.volume ?? 100)
   const [closed, setClosed] = useState(false)
 
   // Pressing play again after closing brings the bar back.

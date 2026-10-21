@@ -31,6 +31,8 @@ export type FeaturedTrack = {
   artist: string
   /** The track's public SoundCloud link. */
   url: string
+  /** Playback volume from 0 to 100, for a track that's louder than the rest. Default 100. */
+  volume?: number
 }
 
 export type SiteContent = {
@@ -100,9 +102,10 @@ export const site: SiteContent = {
       zoom: 1.4,
     },
     track: {
-      title: '[dj set] daydreaming by the window at sunset',
+      title: '[dj set] daydreaming',
       artist: 'will in space',
       url: 'https://soundcloud.com/willinspace/daydreaming-by-the-window-at-sunset',
+      volume: 45,
     },
   },
 
