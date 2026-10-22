@@ -28,7 +28,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--space-s);
-  padding-block: 14px;
+  padding-block: 12px 11px;
 }
 
 /* The drawing sits low in its 48px box and the nav buttons are 40px, so the
@@ -56,9 +56,79 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
+}
+
+/* Menu buttons as little vinyl records. The button itself stays still (so
+   its tooltip doesn't spin); the record inside it does the turning. */
+.site-nav .nav-icon-button,
+.site-nav .nav-icon-button:hover,
+.site-nav .nav-icon-button.active {
+  background: none;
+  color: var(--color-button-bg);
+}
+
+/* At rest: a plain black button with a cream icon. */
+.nav-record {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--color-button-bg);
+}
+
+.nav-record-label {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--color-button-text);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.nav-icon-button:hover .nav-record-label {
+  color: color-mix(in srgb, var(--color-accent) 35%, var(--color-button-text));
+}
+
+/* The page you're on turns into a little vinyl record: fine grooves with a
+   faint sheen, a cognac centre label, and it spins. */
+.nav-icon-button.active .nav-record {
+  background:
+    conic-gradient(
+      from 30deg,
+      transparent 0deg,
+      rgba(255, 236, 214, 0.14) 40deg,
+      transparent 90deg,
+      transparent 180deg,
+      rgba(255, 236, 214, 0.1) 220deg,
+      transparent 270deg
+    ),
+    repeating-radial-gradient(circle, var(--color-button-bg) 0 1.6px, #2c241e 1.6px 3px);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.55);
+  animation: nav-record-spin 3.2s linear infinite;
+}
+
+.nav-icon-button.active .nav-record-label {
+  background: var(--color-accent);
+  color: var(--color-button-text);
+}
+
+@keyframes nav-record-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-icon-button.active .nav-record {
+    animation: none;
+  }
 }
 
 .nav-label {

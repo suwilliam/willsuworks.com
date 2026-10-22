@@ -41,7 +41,13 @@ export default function Layout() {
                       aria-label={page.navLabel}
                       data-tooltip={page.navLabel}
                     >
-                      <NavIcon name={page.navIcon} />
+                      {/* A little vinyl record: grooves, with the icon on its centre label.
+                          The page you're on has a cognac label and spins. */}
+                      <span className="nav-record" aria-hidden="true">
+                        <span className="nav-record-label">
+                          <NavIcon name={page.navIcon} size={15} />
+                        </span>
+                      </span>
                       {/* Shown under the icon on phones, where there's no hover tooltip. */}
                       <span className="nav-label" aria-hidden="true">
                         {page.navLabel}

@@ -83,7 +83,7 @@ export default function ProjectDesk({
 }: {
   projects: Project[]
   /** Photos for the desk; one is picked at random each time the page opens. */
-  backgrounds: { src: string; position: string; video?: string }[]
+  backgrounds: { src: string; position: string; video?: string; caption?: string }[]
 }) {
   // Starts on a random background; the corner button steps through the rest.
   const [backgroundIndex, setBackgroundIndex] = useState(() =>
@@ -105,6 +105,9 @@ export default function ProjectDesk({
   const [windows, setWindows] = useState<OpenWindow[]>([])
   // Set when a press turned into a drag, so the click that follows is ignored.
   const suppressClick = useRef(false)
+  // Until someone drags a cloud, a small hint says they can, and the first
+  // cloud gives a little nudge sideways once.
+  const [hasDragged, setHasDragged] = useState(false)
 
   const deskSize = () => {
     const rect = deskRef.current?.getBoundingClientRect()
@@ -172,6 +175,7 @@ export default function ProjectDesk({
         })),
       (dragged) => {
         suppressClick.current = dragged
+        if (dragged) setHasDragged(true)
       },
     )
   }
@@ -221,6 +225,24 @@ export default function ProjectDesk({
           aria-hidden="true"
         />
       )}
+      <p className={`desk-hint${hasDragged ? ' is-hidden' : ''}`} aria-hidden={hasDragged}>
+        {/* Four little arrows: "move". */}
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3" />
+        </svg>
+        Drag the clouds around
+      </p>
+      {background?.caption && <p className="desk-background-caption">{background.caption}</p>}
       {backgrounds.length > 1 && (
         <button
           type="button"
@@ -254,7 +276,7 @@ export default function ProjectDesk({
           <button
             key={project.slug}
             type="button"
-            className="desk-icon"
+            className={`desk-icon${index === 0 && !hasDragged ? ' is-nudging' : ''}`}
             style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
             onPointerDown={(event) => dragIcon(event, project.slug)}
             onClick={() => {

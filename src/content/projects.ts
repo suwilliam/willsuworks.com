@@ -86,14 +86,37 @@ export type Project = {
  * number lower shows more sky, higher shows more ground. For a clip, set
  * video to a short, silent .mp4 in public/videos; it plays on a loop like a
  * GIF, and src is a still from it shown while it loads (and to visitors who
- * turn off motion).
+ * turn off motion). caption is the short line in the desk's corner saying
+ * where it was taken.
  */
-export const deskBackgrounds: { src: string; position: string; video?: string }[] = [
-  { src: '/images/backgrounds/burning-man-sunset.jpg', position: '50% 36%' },
-  { src: '/images/backgrounds/montauk-sunset.jpg', position: '50% 38%' },
-  { src: '/images/backgrounds/nyc-sunset.jpg', position: '50% 42%' },
-  { src: '/images/backgrounds/tempelhof-sunset.jpg', position: '50% 55%' },
+export const deskBackgrounds: {
+  src: string
+  position: string
+  video?: string
+  caption?: string
+}[] = [
   {
+    src: '/images/backgrounds/burning-man-sunset.jpg',
+    position: '50% 36%',
+    caption: 'Sunset over Black Rock City, Burning Man',
+  },
+  {
+    src: '/images/backgrounds/montauk-sunset.jpg',
+    position: '50% 38%',
+    caption: 'Pink sky over the dunes in Montauk',
+  },
+  {
+    src: '/images/backgrounds/nyc-sunset.jpg',
+    position: '50% 42%',
+    caption: 'Sunset behind the Midtown skyline, New York',
+  },
+  {
+    src: '/images/backgrounds/tempelhof-sunset.jpg',
+    position: '50% 55%',
+    caption: 'Golden hour at Tempelhofer Feld, Berlin',
+  },
+  {
+    caption: 'Surfers at sunset in Kauai',
     src: '/images/backgrounds/kauai-surfing-poster.jpg',
     video: '/images/backgrounds/kauai-surfing.mp4',
     position: '50% 50%',
