@@ -4,7 +4,7 @@
   align-items: center;
   /* The rings already add space around the photo, so the gap to the text is small. */
   gap: var(--space-m);
-  padding-block: 40px 96px;
+  padding-block: 40px;
 }
 
 .hero-text {
