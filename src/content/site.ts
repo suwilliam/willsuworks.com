@@ -182,7 +182,7 @@ export const site: SiteContent = {
       {
         src: '/images/music/bay-window-setup.jpg',
         alt: 'A DJ controller and two speakers on a desk in a curved bay window at sunset',
-        caption: 'My setup in the bay window at sunset when I used to live in San Francisco.',
+        caption: 'My setup in my bay windows at sunset when I used to live in San Francisco.',
       },
     ],
     outro: 'My first EP under my artist project name *will in space* is in the works.',

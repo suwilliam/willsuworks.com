@@ -13,7 +13,7 @@ import './ProjectDesk.css'
 
 // The Portfolio "desk": each project is an icon you can drag around. Clicking
 // an icon opens a small window about the project, which can be dragged by its
-// title bar; several can be open at once. Red closes a window (so does
+// title bar; opening another replaces it. Red closes the window (so does
 // Escape), green opens the full case study.
 
 type Point = { x: number; y: number }
@@ -134,7 +134,8 @@ export default function ProjectDesk({
       // Beside the icon, kept inside the desk.
       const x = clamp((spot.x / 100) * width + 56, 8, width - windowWidth - 8)
       const y = clamp((spot.y / 100) * height - 80, 8, height - 260)
-      setWindows((open) => [...open, { slug, x, y }])
+      // Only one window at a time: opening a project closes the one before.
+      setWindows([{ slug, x, y }])
     }
     // Move keyboard focus into the window once it's on screen. preventScroll
     // matters: otherwise the browser scrolls the desk itself to show the
