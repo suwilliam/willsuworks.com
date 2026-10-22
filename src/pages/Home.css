@@ -204,22 +204,59 @@
   text-decoration: underline;
 }
 
-/* The ripple rings slowly turn all the time, like a record on the platter,
-   whether or not the track is playing. */
-.photo-stage .photo-rings {
-  animation: rings-spin 24s linear infinite;
+/* At rest the photo already reads as a record: a dark rim, fine grooves
+   across its outer band (fading out before the middle, which stays clear like
+   a label) and a soft sheen. The grooves turn with the photo; the sheen stays
+   still, like light on a real record, so the spin is visible. */
+.photo-stage .photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: repeating-radial-gradient(
+    circle,
+    rgba(23, 17, 13, 0.16) 0 1px,
+    transparent 1px 3.5px
+  );
+  mask: radial-gradient(circle closest-side, transparent 58%, #000 80%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
-@keyframes rings-spin {
-  to {
-    rotate: 360deg;
-  }
+/* The record's dark rim. */
+.photo-stage .photo-rim {
+  position: absolute;
+  inset: var(--photo-frame-padding);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 3px rgba(23, 17, 13, 0.6),
+    inset 0 0 0 4px rgba(255, 244, 228, 0.12);
+  pointer-events: none;
+}
+
+.record-shine {
+  position: absolute;
+  inset: var(--photo-frame-padding);
+  border-radius: 50%;
+  background: conic-gradient(
+    from 20deg,
+    transparent 0deg,
+    rgba(255, 244, 228, 0.22) 30deg,
+    transparent 75deg,
+    transparent 180deg,
+    rgba(255, 244, 228, 0.16) 210deg,
+    transparent 255deg
+  );
+  mask: radial-gradient(circle closest-side, transparent 50%, #000 85%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
 }
 
 /* Record mode, only while playing: dark vinyl grooves close in from the
-   edge, leaving the photo as the record's centre label, and the photo spins
-   at 33⅓ rpm (1.8s a turn). On pause the grooves pull back out. The grooves and shine stay still, like light on a real
-   record; only the label visibly turns. */
+   edge, the photo fades into a plain label, and the track name on the label
+   turns slowly enough to read (8s a turn). On pause the grooves pull back
+   out. The grooves and shine stay still, like light on a real record. */
 /* The label's radius as a share of the record's radius: 102% hides the
    vinyl completely; the playing value sets how much of the photo stays
    visible as the label. */
@@ -290,13 +327,54 @@
   opacity: 1;
 }
 
-/* The photo spins while playing and, when paused, stays at whatever angle
-   it had reached, like a record when you lift the needle. */
+/* While playing, the photo fades out of the label, leaving a plain cognac
+   record label; it fades back in on pause. */
 .photo-stage .photo {
-  animation: record-spin 1.8s linear infinite paused;
+  /* A lighter, warmer brown than the accent, framed by the accent ring. */
+  background: #b5733f;
 }
 
-.is-playing .photo-stage .photo {
+.photo-stage .photo img {
+  transition: opacity 400ms ease;
+}
+
+.is-playing .photo-stage .photo img {
+  opacity: 0;
+  transition-delay: 200ms;
+}
+
+/* The track name in a circle on the label. It fades in once the photo has
+   gone and turns in step with the label. */
+.record-text {
+  position: absolute;
+  inset: var(--photo-frame-padding);
+  width: calc(100% - 2 * var(--photo-frame-padding));
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.record-text text {
+  font-family: var(--font-display);
+  font-size: 5.6px;
+  letter-spacing: 0.04em;
+  fill: #f3e2c8;
+}
+
+.is-playing .record-text {
+  opacity: 0.9;
+  transition-delay: 350ms;
+}
+
+/* Only the label's text spins (the photo is hidden while playing, so it never
+   turns and always comes back upright). On pause the text stops where it is
+   as it fades, like a record when you lift the needle. */
+.record-text {
+  animation: record-spin 8s linear infinite paused;
+}
+
+.is-playing .record-text {
   animation-play-state: running;
 }
 
@@ -307,8 +385,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo-stage .photo-rings,
-  .photo-stage .photo {
+  .record-text {
     animation: none;
   }
 

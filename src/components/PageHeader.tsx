@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import Ripples from './Ripples'
+import BeachWaves from './BeachWaves'
 
 type PageHeaderProps = {
   eyebrow: string
@@ -35,28 +35,33 @@ export default function PageHeader({ eyebrow, title, intro, children, ripple }: 
   const placements = Array.isArray(ripple) ? ripple : [ripple ?? {}]
   return (
     <>
-      {/* The site's ripple motif, faint beside the page's content. Each group
-          is turned differently so they don't look stamped. */}
-      {placements.map((place, index) => (
-        <div
-          key={index}
-          className={`page-ripples${place.edge === 'left' ? ' is-left-edge' : ''}`}
-          style={
-            {
-              top: place.top ?? '0px',
-              right: place.left || place.edge ? 'auto' : (place.right ?? 'var(--gutter)'),
-              // Left edge: the ripple's right side ends just before the content starts.
-              left:
-                place.edge === 'left'
-                  ? 'calc(var(--gutter) - var(--ripple-size) - 24px)'
-                  : (place.left ?? 'auto'),
-              '--ripple-size': place.size ?? 'clamp(170px, 26vw, 320px)',
-            } as CSSProperties
-          }
-        >
-          <Ripples phase={phaseFor(eyebrow) + index * 2.3} />
+      {/* The waves beside the page's content, pinned in place as the page
+          scrolls: a page-sized layer holds a sticky band just under the
+          header, and each wave drawing sits in that band at its own spot. */}
+      <div className="page-ripples-layer" aria-hidden="true">
+        <div className="page-ripples-sticky">
+          {placements.map((place, index) => (
+            <div
+              key={index}
+              className={`page-ripples${place.edge === 'left' ? ' is-left-edge' : ''}`}
+              style={
+                {
+                  top: place.top ?? '0px',
+                  right: place.left || place.edge ? 'auto' : (place.right ?? 'var(--gutter)'),
+                  // Left edge: the ripple's right side ends just before the content starts.
+                  left:
+                    place.edge === 'left'
+                      ? 'calc(var(--gutter) - var(--ripple-size) - 24px)'
+                      : (place.left ?? 'auto'),
+                  '--ripple-size': place.size ?? 'clamp(170px, 26vw, 320px)',
+                } as CSSProperties
+              }
+            >
+              <BeachWaves phase={phaseFor(eyebrow) + index * 2.3} />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
       <header className="page-header">
         {title ? (
           <>

@@ -39,7 +39,8 @@
   position: absolute;
   right: 12px;
   bottom: 12px;
-  z-index: 50;
+  /* Above the clouds, but behind any open project window. */
+  z-index: 5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -88,11 +89,7 @@
   display: block;
   width: calc(108px * var(--cloud-scale, 1));
   height: calc(72px * var(--cloud-scale, 1));
-  /* A soft shadow under the cloud, following its shape. */
-  filter: drop-shadow(0 10px 10px rgba(42, 26, 16, 0.35));
-  transition:
-    translate 150ms ease,
-    filter 150ms ease;
+  transition: translate 150ms ease;
   /* Each cloud bobs gently, out of step with its neighbours. */
   animation: desk-cloud-bob 6s ease-in-out infinite;
   animation-delay: calc(var(--bob, 0) * -1.7s);
@@ -104,30 +101,16 @@
   position: relative;
   width: 100%;
   height: 100%;
-  padding-top: 14px;
-  /* Cream on top, warming to a sunset tint underneath. */
-  background: linear-gradient(#fffaf2 35%, #f7dcc0);
 }
 
-/* Cloud outlines (see CLOUDS in ProjectDesk.tsx). */
-.cloud-puffy .desk-icon-cloud {
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='34' cy='52' r='20'/%3E%3Ccircle cx='60' cy='36' r='26'/%3E%3Ccircle cx='88' cy='48' r='20'/%3E%3Crect x='14' y='48' width='92' height='26' rx='13'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='34' cy='52' r='20'/%3E%3Ccircle cx='60' cy='36' r='26'/%3E%3Ccircle cx='88' cy='48' r='20'/%3E%3Crect x='14' y='48' width='92' height='26' rx='13'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cloud-long .desk-icon-cloud {
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='24' cy='58' r='15'/%3E%3Ccircle cx='48' cy='44' r='20'/%3E%3Ccircle cx='74' cy='42' r='22'/%3E%3Ccircle cx='98' cy='56' r='15'/%3E%3Crect x='9' y='56' width='104' height='18' rx='9'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='24' cy='58' r='15'/%3E%3Ccircle cx='48' cy='44' r='20'/%3E%3Ccircle cx='74' cy='42' r='22'/%3E%3Ccircle cx='98' cy='56' r='15'/%3E%3Crect x='9' y='56' width='104' height='18' rx='9'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cloud-tall .desk-icon-cloud {
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='40' cy='50' r='22'/%3E%3Ccircle cx='66' cy='32' r='29'/%3E%3Ccircle cx='88' cy='54' r='18'/%3E%3Crect x='18' y='52' width='86' height='22' rx='11'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='40' cy='50' r='22'/%3E%3Ccircle cx='66' cy='32' r='29'/%3E%3Ccircle cx='88' cy='54' r='18'/%3E%3Crect x='18' y='52' width='86' height='22' rx='11'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cloud-double .desk-icon-cloud {
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='42' cy='44' r='25'/%3E%3Ccircle cx='80' cy='48' r='22'/%3E%3Crect x='16' y='50' width='90' height='24' rx='12'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Ccircle cx='42' cy='44' r='25'/%3E%3Ccircle cx='80' cy='48' r='22'/%3E%3Crect x='16' y='50' width='90' height='24' rx='12'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+/* The cloud itself: drawn in SunsetCloud.tsx (soft puffs lit by the sunset). */
+.sunset-cloud {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
 
 @keyframes desk-cloud-bob {
@@ -136,28 +119,37 @@
   }
 }
 
-/* A thumbnail fills the whole cloud shape. */
+/* A photo thumbnail sits as a small rounded tile in the middle of the cloud. */
 .desk-icon-cloud img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 34% 26% 14%;
+  width: 48%;
+  height: 52%;
+  border-radius: 10px;
   object-fit: cover;
   pointer-events: none;
 }
 
-/* A logo sits whole in the middle of the cloud instead of filling it, and
-   multiply blending drops its white background into the cloud's colour. */
+/* A logo sits whole in the cloud instead of filling it: every logo gets the
+   same box (a project can shrink a heavy one with iconScale), centred on the
+   middle of its cloud's body (--logo-x, --logo-y, set per outline in
+   SunsetCloud.tsx), so none sits off to one side or spills over the edge.
+   Multiply blending drops a white background into the cloud. */
 .desk-icon-cloud img.is-logo {
-  /* The cloud's bumps sit at the top, so leave more room there. */
-  top: 16px;
-  bottom: 4px;
-  height: calc(100% - 20px);
+  inset: auto;
+  left: var(--logo-x, 50%);
+  top: var(--logo-y, 62%);
+  translate: -50% -50%;
+  width: var(--logo-size, 44%);
+  height: var(--logo-size, 44%);
+  border-radius: 0;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
 
 .desk-icon-letter {
+  position: relative;
+  margin-top: 12%;
   font-family: var(--font-display);
   font-size: calc(30px * var(--cloud-scale, 1));
   line-height: 1;
@@ -165,7 +157,6 @@
 }
 
 .desk-icon:hover .desk-icon-image {
-  filter: drop-shadow(0 16px 14px rgba(42, 26, 16, 0.4));
   animation-play-state: paused;
 }
 
@@ -184,6 +175,10 @@
 /* Windows: a light title bar with green (open) and red (close) buttons. */
 .desk-window {
   position: absolute;
+  /* Never taller than the desk: the body scrolls inside instead. */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 16px);
   width: min(380px, calc(100% - 16px));
   overflow: hidden;
   border-radius: 10px;
@@ -270,7 +265,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 420px;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   padding: 16px 18px 18px;
   font-size: 16px;

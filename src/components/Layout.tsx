@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { findProject, projects } from '../content/projects'
 import { site } from '../content/site'
@@ -14,6 +14,7 @@ import './Layout.css'
 
 export default function Layout() {
   const scrolled = useScrolled()
+  const siteTopRef = useSiteTopHeight()
   usePageChange()
   const { pathname } = useLocation()
   const direction = useSlideDirection(pathname)
@@ -21,12 +22,12 @@ export default function Layout() {
   return (
     <PlayerProvider track={site.home.track}>
       <div className="site">
-        <div className="site-top" data-scrolled={scrolled || undefined}>
+        <div className="site-top" ref={siteTopRef} data-scrolled={scrolled || undefined}>
           <div className="decor-strip" aria-hidden="true" />
 
           <header className="site-header container">
             <Link to="/" className="brand" aria-label={`${site.name}, home`} data-tooltip="Home">
-              <WaveMark size={48} />
+              <WaveMark size={58} />
             </Link>
             <nav className="site-nav" aria-label="Main">
               {pages
@@ -151,7 +152,8 @@ function useSlideDirection(pathname: string) {
       if (index !== -1) return index
       // Project pages sit just after Portfolio, in project order.
       const project = findProject(projectSlug(path))
-      if (project !== -1) return pages.findIndex((p) => p.path === '/portfolio') + (project + 1) / 100
+      if (project !== -1)
+        return pages.findIndex((p) => p.path === '/portfolio') + (project + 1) / 100
       return pages.length
     }
     setState({ path: pathname, direction: order(pathname) > order(state.path) ? 'right' : 'left' })
@@ -177,4 +179,21 @@ function useScrolled() {
   }, [])
 
   return scrolled
+}
+
+// Shares the sticky header's height as --site-top-height, so things pinned
+// while scrolling (like the page waves) can sit just below it.
+function useSiteTopHeight() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+    const update = () =>
+      document.documentElement.style.setProperty('--site-top-height', `${element.offsetHeight}px`)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+  return ref
 }

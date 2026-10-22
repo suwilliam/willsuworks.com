@@ -16,8 +16,13 @@ export function MediaFigure({
     return (
       <figure className="media media-gallery">
         <div
-          className={`media-gallery-grid${media.columns === 1 ? ' is-stacked' : ''}`}
-          style={{ '--count': media.columns ?? Math.min(media.images.length, 3) } as CSSProperties}
+          className={`media-gallery-grid${media.columns === 1 ? ' is-stacked' : ''}${media.rowHeight ? ' is-row' : ''}`}
+          style={
+            {
+              '--count': media.columns ?? Math.min(media.images.length, 3),
+              '--row-height': media.rowHeight ? `${media.rowHeight}px` : undefined,
+            } as CSSProperties
+          }
         >
           {media.images.map((image) => (
             <button

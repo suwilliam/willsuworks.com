@@ -71,6 +71,8 @@ export type SiteContent = {
     profile?: { image: string; tagline?: string; url: string }
     /** A wide photo between the intro and the tracklist. */
     photo?: { src: string; alt: string; caption?: string }
+    /** Photos side by side under the tracklist. */
+    photos?: { src: string; alt: string; caption?: string }[]
     tracks: Track[]
   }
   contact: {
@@ -93,7 +95,7 @@ export const site: SiteContent = {
   home: {
     based: 'New York, NY',
     intro: [
-      'Building [cool things](/portfolio) and getting [two master degrees](/tech) at Columbia',
+      'Building [cool things](/portfolio) and pursuing [dual master degrees](/tech) at Columbia',
     ],
     photo: {
       src: '/images/profile/profile.jpg',
@@ -110,7 +112,8 @@ export const site: SiteContent = {
   },
 
   work: {
-    intro: 'I dive deep in engineering and product.',
+    intro:
+      "I've been building software for about eight years, first as an engineer and later as a PM.",
     resumeUrl: '/William_Su_Resume.pdf',
     roles: [
       {
@@ -129,21 +132,23 @@ export const site: SiteContent = {
           },
         ],
         summary:
-          'An MBA focused on tech strategy and entrepreneurship, paired with an MS in AI from Columbia Engineering.',
+          'An MBA in tech strategy and entrepreneurship, plus an MS in AI at Columbia Engineering at the same time.',
       },
       {
         years: '2022 – 2026',
         title: 'Product Engineer / Product Manager',
         orgs: [{ name: 'Retool', url: 'https://retool.com', logo: '/images/logos/retool.svg' }],
         summary:
-          "I wore both the engineer and PM hats here. I led the redesign of Retool's core editor, which shipped to 40K+ monthly users, and built a record-and-replay testing product from scratch that landed with ~15 enterprise customers.",
+          "I started as an engineer and ended up doing a lot of the PM work too. I led engineering on the redesign of Retool's main editor, which went out to 40K+ monthly users, and took a new record-and-replay testing product from nothing to ~15 enterprise customers.",
       },
       {
         years: '2018 – 2022',
         title: 'Product / Software Engineer',
-        orgs: [{ name: 'Amplitude', url: 'https://amplitude.com', logo: '/images/logos/amplitude.svg' }],
+        orgs: [
+          { name: 'Amplitude', url: 'https://amplitude.com', logo: '/images/logos/amplitude.svg' },
+        ],
         summary:
-          "Joined at Series C and stayed through the IPO, going from engineer to tech lead. I led dashboards (up 50% to ~30K monthly users), built Amplitude's first permissions system, and interviewed 50+ engineers as the team tripled.",
+          "I joined at Series C and stayed through the IPO, going from engineer to tech lead. I led engineering on dashboards, which grew from ~20K to ~30K monthly users, built Amplitude's first permissions system, and did 50+ interviews as the engineering team tripled.",
       },
       {
         years: '2014 – 2018',
@@ -161,12 +166,25 @@ export const site: SiteContent = {
   },
 
   music: {
-    intro: 'I make music in Ableton and DJ house and jazz sometimes. Here are a couple of tracks I made.',
+    intro:
+      'I make music in Ableton and DJ house and jazz sometimes. Here are a couple of tracks I made.',
     photo: {
       src: '/images/music/music-production-cafe.jpg',
       alt: 'A laptop running Ableton, an Akai MPK mini keyboard and headphones on a sunny café window counter',
       caption: 'Ableton, an MPK mini and a sunny window seat at a cafe.',
     },
+    photos: [
+      {
+        src: '/images/music/dj-set.jpg',
+        alt: 'William DJing in headphones behind a glass booth, under coloured stage lights',
+        caption: 'Behind the decks.',
+      },
+      {
+        src: '/images/music/bay-window-setup.jpg',
+        alt: 'A DJ controller and two speakers on a desk in a curved bay window at sunset',
+        caption: 'My setup in the bay window at sunset when I used to live in San Francisco.',
+      },
+    ],
     outro: 'My first EP under my artist project name *will in space* is in the works.',
     artist: 'will in space',
     profile: {

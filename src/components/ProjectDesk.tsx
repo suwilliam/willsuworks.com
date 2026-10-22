@@ -8,6 +8,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom'
 import type { Project } from '../content/projects'
 import RichText from './RichText'
+import SunsetCloud, { cloudCentre } from './SunsetCloud'
 import './ProjectDesk.css'
 
 // The Portfolio "desk": each project is an icon you can drag around. Clicking
@@ -29,11 +30,12 @@ const FALLBACK_SPOTS: Point[] = [
 ]
 
 // Each cloud gets its own outline and size, cycling through these.
+// Different cloud outlines for variety, all the same size so the desk looks even.
 const CLOUDS = [
-  { shape: 'puffy', scale: 1 },
-  { shape: 'long', scale: 1.2 },
-  { shape: 'tall', scale: 0.85 },
-  { shape: 'double', scale: 1.1 },
+  { shape: 'puffy', scale: 1.15 },
+  { shape: 'long', scale: 1.15 },
+  { shape: 'tall', scale: 1.15 },
+  { shape: 'double', scale: 1.15 },
 ]
 
 const WINDOW_WIDTH = 380
@@ -131,8 +133,18 @@ export default function ProjectDesk({
       const y = clamp((spot.y / 100) * height - 80, 8, height - 260)
       setWindows((open) => [...open, { slug, x, y }])
     }
-    // Move keyboard focus into the window once it's on screen.
-    requestAnimationFrame(() => document.getElementById(`desk-window-${slug}`)?.focus())
+    // Move keyboard focus into the window once it's on screen. preventScroll
+    // matters: otherwise the browser scrolls the desk itself to show the
+    // window, sliding every cloud up out of view.
+    requestAnimationFrame(() => {
+      const element = document.getElementById(`desk-window-${slug}`)
+      if (!element) return
+      element.focus({ preventScroll: true })
+      // Now that its real height is known, nudge it up if it would run past
+      // the bottom of the desk.
+      const maxY = Math.max(8, deskSize().height - element.offsetHeight - 8)
+      setWindows((open) => open.map((w) => (w.slug === slug && w.y > maxY ? { ...w, y: maxY } : w)))
+    })
   }
 
   // Escape closes the window on top.
@@ -262,10 +274,14 @@ export default function ProjectDesk({
                 {
                   '--bob': `${index}`,
                   '--cloud-scale': CLOUDS[index % CLOUDS.length].scale,
+                  '--logo-x': `${cloudCentre(index)[0]}%`,
+                  '--logo-y': `${cloudCentre(index)[1]}%`,
+                  '--logo-size': `${44 * (project.desk?.iconScale ?? 1)}%`,
                 } as CSSProperties
               }
             >
               <span className="desk-icon-cloud">
+                <SunsetCloud variant={index} seed={index * 7 + 3} />
                 {image ? (
                   <img
                     className={project.desk?.iconIsLogo ? 'is-logo' : undefined}

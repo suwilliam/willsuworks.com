@@ -1,5 +1,4 @@
-import { useLayoutEffect, useRef, type CSSProperties, type ReactNode } from 'react'
-import ArtistLink from '../components/ArtistLink'
+import { useId, useLayoutEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import Photo from '../components/Photo'
 import { Link } from 'react-router-dom'
 import { site, type FeaturedTrack } from '../content/site'
@@ -58,11 +57,11 @@ export default function Home() {
   )
 }
 
-// The profile photo doubles as a record: hover (or tap) to reveal a play
-// button. While the track plays, vinyl grooves close in around the photo,
-// which spins as the record's label, and the ripple rings turn; on pause it
-// goes back to a plain photo. Playback runs in the
-// site-wide player, so it carries on in the bottom bar on other pages.
+// The profile photo doubles as a record (a rim, grooves and sheen hint at it
+// even at rest): hover (or tap) to reveal a play button. While the track
+// plays, vinyl grooves close in and the photo gives way to a plain label with
+// the track name turning on it; on pause the photo comes back, upright. Playback runs in the site-wide
+// player, so it carries on in the bottom bar on other pages.
 function PlayablePhoto({
   player,
   track,
@@ -83,7 +82,10 @@ function PlayablePhoto({
       <div className="photo-stage">
         {children}
         <span className="record-vinyl" aria-hidden="true" />
+        <span className="record-shine" aria-hidden="true" />
+        <span className="photo-rim" aria-hidden="true" />
         <span className="record-spindle" aria-hidden="true" />
+        <RecordLabelText text={`${track.title} · ${track.artist} · `} />
         <button
           type="button"
           className="track-toggle"
@@ -108,18 +110,29 @@ function TrackCaption({ player, track }: { player: Player; track: FeaturedTrack 
   return (
     <p className="track-caption">
       <span className="track-caption-label">
-        {playing ? 'Now playing' : 'Press me to play'}
+        {playing ? 'Now playing' : 'Press me to play music'}
         <span className="track-caption-arrow" aria-hidden="true">
           →
         </span>
       </span>
-      <span className="track-caption-title">
-        <a href={track.url} target="_blank" rel="noreferrer">
-          {track.title}
-        </a>{' '}
-        by <ArtistLink name={track.artist} />
-      </span>
     </p>
+  )
+}
+
+// The track name printed in a circle on the record's label, like the text on
+// a real record. While the track plays, the photo fades out of the label and
+// this turns slowly.
+function RecordLabelText({ text }: { text: string }) {
+  const id = useId()
+  return (
+    <svg className="record-text" viewBox="0 0 100 100" aria-hidden="true">
+      <path id={id} d="M50 50m-19 0a19 19 0 1 1 38 0a19 19 0 1 1-38 0" fill="none" />
+      <text>
+        <textPath href={`#${id}`} textLength="118" lengthAdjust="spacing">
+          {text}
+        </textPath>
+      </text>
+    </svg>
   )
 }
 

@@ -170,6 +170,20 @@
   filter: var(--photo-grade);
 }
 
+/* Two photos side by side under the tracklist, portrait and the same size. */
+.music-photos {
+  width: 100%;
+  max-width: 760px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-m);
+}
+
+.music-photos .music-photo img {
+  aspect-ratio: 4 / 5;
+  object-position: center;
+}
+
 .music-photo figcaption {
   font-size: var(--text-small);
   font-style: italic;
@@ -472,6 +486,20 @@
 /* The ripple motif in each page's top-right corner: the same lopsided rings
    as the homepage photo, opening out from a small centre like a stone
    dropped in water, very faint and turning slowly. Content sits above it. */
+.page-ripples-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Sticks just under the site header, so the waves hold still on screen
+   while the page scrolls past (until the end of the page). */
+.page-ripples-sticky {
+  position: sticky;
+  top: var(--site-top-height, 0px);
+  height: 0;
+}
+
 .page-ripples {
   /* Position comes from each page (PageHeader's ripple prop). */
   position: absolute;
@@ -480,7 +508,6 @@
   /* The same cognac as the rings around the homepage photo. */
   color: var(--photo-ring-color);
   pointer-events: none;
-  animation: ripple-turn 140s linear infinite;
 }
 
 .page-ripples svg {
@@ -489,7 +516,7 @@
   height: 100%;
 }
 
-.page > :not(.page-ripples) {
+.page > :not(.page-ripples-layer) {
   position: relative;
 }
 
@@ -543,7 +570,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .page-ripples,
   .artist-photo-ripples {
     animation: none;
   }

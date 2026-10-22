@@ -44,6 +44,27 @@
   gap: 12px;
 }
 
+/* Same-height row: each image keeps its shape, so wide and tall pieces sit
+   side by side without empty space. Narrow screens scale the row down. */
+.media-gallery-grid.is-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.media-gallery-grid.is-row .media-zoom {
+  width: auto;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.media-gallery-grid.is-row img {
+  height: min(var(--row-height), 45vw);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 /* One column: snippets stacked, in a narrower column so text stays phone-sized. */
 .media-gallery-grid.is-stacked {
   max-width: 520px;

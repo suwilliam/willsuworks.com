@@ -1,0 +1,319 @@
+.beach-waves {
+  overflow: hidden;
+  /* Soft edges: the waves fade out at the sides and the bottom. */
+  mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    linear-gradient(#000 75%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    linear-gradient(#000 75%, transparent);
+  -webkit-mask-composite: source-in;
+}
+
+.beach-waves-row {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  animation: beach-waves-roll var(--wave-seconds, 10s) linear infinite;
+}
+
+@keyframes beach-waves-roll {
+  to {
+    translate: calc(-1px * var(--wave-length)) 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beach-waves-row {
+    animation: none;
+  }
+}
+
+/* ---- Visitors: drawn in the waves' colour, with page-coloured details. ---- */
+.beach-visitor {
+  fill: currentColor;
+}
+
+.beach-visitor-cut {
+  fill: var(--color-bg);
+}
+
+.beach-visitor-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.beach-visitor-cut.beach-visitor-line,
+.beach-visitor-duck .beach-visitor-line {
+  stroke: var(--color-bg);
+  stroke-width: 1px;
+}
+
+/* Travellers (duck, bottle, gull, boat) cross from one side to the other,
+   fading in and out at the ends. */
+.beach-visitor-duck,
+.beach-visitor-bottle,
+.beach-visitor-gull,
+.beach-visitor-boat {
+  animation: visitor-cross var(--visit-ms) linear both;
+}
+
+.beach-visitor.is-reverse {
+  animation-name: visitor-cross-back;
+}
+
+@keyframes visitor-cross {
+  0% {
+    translate: -10px calc(var(--visit-y) * 1px);
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    translate: 110px calc(var(--visit-y) * 1px);
+    opacity: 0;
+  }
+}
+
+@keyframes visitor-cross-back {
+  0% {
+    translate: 110px calc(var(--visit-y) * 1px);
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    translate: -10px calc(var(--visit-y) * 1px);
+    opacity: 0;
+  }
+}
+
+/* Riding the swell: a gentle bob and rock. */
+.beach-visitor-duck .beach-visitor-motion,
+.beach-visitor-boat .beach-visitor-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visitor-bob 2.4s ease-in-out infinite alternate;
+}
+
+.beach-visitor-bottle .beach-visitor-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visitor-rock 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes visitor-bob {
+  from {
+    translate: 0 -0.7px;
+    rotate: -6deg;
+  }
+  to {
+    translate: 0 0.7px;
+    rotate: 6deg;
+  }
+}
+
+@keyframes visitor-rock {
+  from {
+    translate: 0 -0.5px;
+    rotate: -14deg;
+  }
+  to {
+    translate: 0 0.6px;
+    rotate: 12deg;
+  }
+}
+
+/* Seagull: quick wing flaps. */
+.beach-visitor-wings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visitor-flap 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes visitor-flap {
+  to {
+    scale: 1 0.35;
+  }
+}
+
+/* Fish: leaps out of a wave in an arc and dives back in, with a splash. */
+.beach-visitor-fish {
+  translate: calc(var(--visit-x) * 1px) calc(var(--visit-y) * 1px);
+}
+
+.beach-visitor-fish .beach-visitor-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visitor-leap var(--visit-ms) ease-in-out both;
+}
+
+@keyframes visitor-leap {
+  0% {
+    translate: -5px 1px;
+    rotate: -55deg;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  50% {
+    translate: 0 -15px;
+    rotate: 0deg;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    translate: 5px 1px;
+    rotate: 55deg;
+    opacity: 0;
+  }
+}
+
+.beach-visitor-splash {
+  opacity: 0;
+  animation: visitor-splash var(--visit-ms) ease-out both;
+}
+
+@keyframes visitor-splash {
+  0%,
+  6% {
+    translate: -5px 0;
+    opacity: 1;
+  }
+  20%,
+  80% {
+    translate: -5px 0;
+    opacity: 0;
+  }
+  86% {
+    translate: 5px 0;
+    opacity: 1;
+  }
+  100% {
+    translate: 5px 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beach-visitor {
+    display: none;
+  }
+}
+
+/* ---- People on the water ---- */
+.beach-visitor-limb {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.beach-visitor-thin {
+  stroke-width: 0.8px;
+  opacity: 0.7;
+}
+
+.beach-visitor-surfer,
+.beach-visitor-fisher,
+.beach-visitor-paddler,
+.beach-visitor-snorkeler {
+  animation: visitor-cross var(--visit-ms) linear both;
+}
+
+.beach-visitor-surfer.is-reverse,
+.beach-visitor-fisher.is-reverse,
+.beach-visitor-paddler.is-reverse,
+.beach-visitor-snorkeler.is-reverse {
+  animation-name: visitor-cross-back;
+}
+
+/* Surfer: carves up and down the face of the wave. */
+.beach-visitor-surfer .beach-visitor-motion {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: visitor-carve 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes visitor-carve {
+  from {
+    translate: 0 0.6px;
+    rotate: -9deg;
+  }
+  to {
+    translate: 0 -1.4px;
+    rotate: 7deg;
+  }
+}
+
+/* Fishing boat and paddleboard ride the swell like the duck. */
+.beach-visitor-fisher .beach-visitor-motion,
+.beach-visitor-paddler .beach-visitor-motion {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: visitor-bob 2.8s ease-in-out infinite alternate;
+}
+
+/* Paddleboarder: the paddle sweeps back and forth. */
+.beach-visitor-paddle {
+  transform-box: fill-box;
+  transform-origin: 70% 0%;
+  animation: visitor-paddle 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes visitor-paddle {
+  from {
+    rotate: -14deg;
+  }
+  to {
+    rotate: 16deg;
+  }
+}
+
+/* Snorkeler: bobs, kicks, and now and then ducks under for a look. */
+.beach-visitor-snorkeler .beach-visitor-motion {
+  animation: visitor-snorkel 7s ease-in-out infinite;
+}
+
+@keyframes visitor-snorkel {
+  0%,
+  35%,
+  65%,
+  100% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  45%,
+  55% {
+    translate: 0 2px;
+    opacity: 0.25;
+  }
+}
+
+.beach-visitor-fins {
+  transform-box: fill-box;
+  transform-origin: right center;
+  animation: visitor-kick 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes visitor-kick {
+  from {
+    rotate: -18deg;
+  }
+  to {
+    rotate: 14deg;
+  }
+}

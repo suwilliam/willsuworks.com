@@ -37,7 +37,7 @@
    hang under the buttons. */
 .brand {
   display: inline-flex;
-  margin-top: -9px;
+  margin-top: -13px;
   color: var(--color-text);
   transition: color 150ms ease;
 }
@@ -160,6 +160,10 @@
 /* The Music page's studio photo comes in after the intro, just before the tracklist. */
 .page-transition .music-photo {
   --slide-base: 160ms;
+}
+
+.page-transition .music-photos .music-photo {
+  --slide-base: 300ms;
 }
 
 .page-transition :is(.page > p, .artist-card, .desk) {
