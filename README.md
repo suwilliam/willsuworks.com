@@ -19,7 +19,7 @@ npm run preview  # serve the production build locally
 | Any text, links, jobs, projects, tracks | `src/content/site.ts`          |
 | Portfolio projects (case studies) | `src/content/projects.ts`; images and videos go in `public/images/projects/<slug>/` |
 | Your photo                 | `public/images/profile/profile.jpg`, referenced by `home.photo` in `src/content/site.ts`. `position` controls the crop. |
-| Your resume                | `public/William_Su_Resume.pdf`, referenced by `work.resumeUrl` |
+| Your resume                | `public/WilliamSuResumeOfficial.pdf`, referenced by `work.resumeUrl` |
 | Which pages exist / menu order | `src/pages/index.ts`                      |
 | Colors, fonts, shapes      | `src/theme/themes/*.css`                      |
 | Which theme is active      | `activeTheme` in `src/theme/config.ts`        |

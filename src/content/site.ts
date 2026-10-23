@@ -114,7 +114,7 @@ export const site: SiteContent = {
   work: {
     intro:
       "I've been building software for about eight years, first as an engineer and later as a PM.",
-    resumeUrl: '/William_Su_Resume.pdf',
+    resumeUrl: '/WilliamSuResumeOfficial.pdf',
     roles: [
       {
         years: '2026 – 2028',
