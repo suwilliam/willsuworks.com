@@ -373,7 +373,9 @@ export default function ProjectDesk({
                 />
               )}
               <p className="desk-window-meta">
-                {project.role} · {project.year}
+                {(project.label ?? project.role)
+                  ? `${project.label ?? project.role} · ${project.year}`
+                  : project.year}
               </p>
               <p>
                 <RichText text={project.oneLiner} />

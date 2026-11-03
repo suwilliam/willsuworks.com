@@ -52,7 +52,10 @@ export type Project = {
       Write [words](https://…) for a link (on the page; the card shows plain text). */
   oneLiner: string
   year: string
-  role: string
+  /** Optional; shown in the Overview and, unless there's a label, above the title. */
+  role?: string
+  /** Shown above the title and on the desk window instead of the role, e.g. 'Product Pitch'. */
+  label?: string
   tags: string[]
   /** 16:10 works best. Shown on the desk and at the top of the page. */
   /** maxWidth (in px) shows it smaller and centred at the top of the page. */
@@ -711,6 +714,140 @@ export const projects: Project[] = [
     ],
     learned:
       "Simple tools can make a real difference to people's week, and I didn't expect to get this many thank-yous for a homework bot.",
+  },
+  {
+    slug: 'day-one',
+    desk: { x: 51, y: 48, icon: '/images/projects/day-one/logo.png', iconIsLogo: true },
+    title: 'Day One',
+    oneLiner:
+      "A product pitch for international students' first weeks in New York: a personal, step-by-step plan and an AI buddy for the lease, phone, bank account and ID.",
+    year: '2026',
+    label: 'Product Pitch',
+    tags: ['Human-centered design', 'Columbia', 'Product pitch'],
+    cover: {
+      src: '/images/projects/day-one/poster.png',
+      alt: 'Day One poster: "Lease. Bank account. ID. Each one needs the other." above three app screens',
+      maxWidth: 520,
+    },
+    glance: {
+      team: 'Team of 4 MBA/MS students',
+      timeline: 'Human-centered design class project at Columbia',
+    },
+    sections: [
+      {
+        heading: 'The problem',
+        body: [
+          'International students need a home, a phone, a bank account and an ID in their first weeks in New York, all while starting classes far from family.',
+          "Each step feels like a catch-22: a lease, a phone, a bank account, an ID, and each one asks for something you don't have yet. The answers exist, but they're scattered across websites, forums and group chats, so students find them late, and often by chance.",
+        ],
+      },
+      {
+        heading: 'Talking to strangers',
+        body: [
+          'We started by going out and talking to people who had moved to New York from abroad, to hear how their first weeks really went before deciding what to build.',
+          'Every step needs something from another step. Landlords typically ask for income of 40 times the rent, a guarantor in the tri-state area and a credit score of 670 or more, which a new student has no way to show.',
+          "People don't know what they don't know. As one person put it: \"Sometimes I didn't even know that I needed to do something, and then someone just brings it up.\"",
+          'Mistakes cost money. One student was billed for three phone lines they never asked for.',
+          'Knowledge travels through people, in group chats and through friends who arrived first. Official guidance is good on visas, but for everything else it was "too much… so overwhelming." Universities see it too: Columbia\'s international office calls getting a lease without US credit or a US guarantor "very difficult."',
+          'The big takeaway was that proof, not income, is the barrier. Or, as a woman from Peru told us: "We can be legal, but we are called Aliens."',
+        ],
+        media: [
+          {
+            kind: 'gallery',
+            columns: 2,
+            images: [
+              {
+                src: '/images/projects/day-one/talking-to-strangers-1.jpg',
+                alt: 'Our team at a bar, out talking to people for the project',
+              },
+              {
+                src: '/images/projects/day-one/talking-to-strangers-2.jpg',
+                alt: 'A group at a tiki bar, where we talked to people about their first weeks in New York',
+              },
+            ],
+            caption: 'Out talking to strangers about their first weeks in the city.',
+          },
+        ],
+      },
+      {
+        heading: "Who it's for",
+        body: [
+          'The users are incoming international students on F-1 or J-1 visas, with no Social Security number, no US credit history and no local network. There are 137,799 of them in New York State, and NYU and Columbia alone have more than 48,000.',
+          'The customer is the university, starting with Columbia, which had 20,733 international students in 2024/25. Columbia licenses Day One, and students use it for free.',
+          "Plenty of other people shape the experience: landlords and brokers, who approve the lease and ask for income, US credit and a local guarantor; banks, phone carriers and guarantor companies, who decide whether someone without an SSN or US credit can sign up; NYC agencies, who issue IDNYC and the Fair Fares discount; student clubs and alumni, where advice comes from today; and families abroad, who pay for the move but usually can't be the guarantor landlords ask for.",
+        ],
+      },
+      {
+        heading: 'The ideal experience',
+        body: [
+          'Before landing, a student answers a few questions and gets a plan, including a phone plan that works without an SSN.',
+          'In week 1 they open a bank account with their passport and I-20. In week 2 they sign a lease, knowing the broker fee and deposit rules. In week 3 they get an IDNYC and can leave the passport at home. By month 2 they start a campus job, with the SSN plan and form already ready.',
+          'For Columbia, it means every incoming international student gets the same guidance from day one.',
+        ],
+      },
+      {
+        heading: 'How it works',
+        body: [
+          'A student starts with a profile: visa, country, neighborhood, plans and languages, encrypted and erasable. From that, Day One builds a personal plan, with tasks in the order each one unlocks the next, across four categories: identity, banking, housing and getting around.',
+          'Along the way, the buddy, an AI chat, answers questions and builds plans. It can also fill in forms such as the SSN application, and the student always reviews them before sending.',
+          'It sits at the center of everyone else involved. It explains what government services like IDNYC, Fair Fares, Social Security and the DMV ask for, with links to each. It tells students what banks, phone carriers, guarantor companies, landlords and Con Edison require, so they arrive with the right documents. And it puts what student clubs, alumni and group chats know in one place.',
+          "The business is simple: universities license it, starting with Columbia, and it is free for students. Next, based on user feedback, we would add student discounts in one place and each university's own steps inside the plan.",
+        ],
+        media: [
+          {
+            kind: 'gallery',
+            columns: 3,
+            images: [
+              {
+                src: '/images/projects/day-one/home.png',
+                alt: 'Home screen: "Hi, Amara", continue getting your SSN, and categories',
+              },
+              {
+                src: '/images/projects/day-one/identity.png',
+                alt: 'Identity screen recommending a Social Security number, IDNYC and a state ID',
+              },
+              {
+                src: '/images/projects/day-one/buddy-chat.png',
+                alt: 'Buddy chat asking about visa type, then making an SSN plan',
+              },
+              {
+                src: '/images/projects/day-one/ssn-plan.png',
+                alt: 'SSN plan, step 2 of 5: gather your documents, with a checklist',
+              },
+              {
+                src: '/images/projects/day-one/form-ss5.png',
+                alt: 'Form SS-5 filled in by the buddy, with a suggested answer to check',
+              },
+            ],
+            caption:
+              'Prototype screens: home, identity, the buddy chat, the SSN plan and Form SS-5.',
+          },
+        ],
+      },
+      {
+        heading: 'Compared to the alternatives',
+        body: [
+          'We compared Day One with what students use today: group chats and friends, the university international office, America.gov and general AI chatbots.',
+          'Group chats are free but depend on who answers, and steps only come up by chance. The international office is strongest on visas and status, with one checklist for everyone. America.gov covers federal services only and refers you elsewhere for state and city. General AI chatbots cover everything, but only if you know what to ask, and their answers can be wrong.',
+          "Day One is the only one that fits the student's visa, country and plans, puts what to do first in an ordered plan, covers housing, bank, phone and ID together, links to official sources, shows steps before students know to ask, and helps fill in forms. It is free for students, paid for by the university.",
+        ],
+      },
+      {
+        heading: 'The prototype and what users told us',
+        body: [
+          'We prototyped ten screens: welcome, login, home, identity, the buddy chat, the SSN plan, Form SS-5, a housing chat, banking and the profile.',
+          "Testing it with users led to four changes: one consistent card design, help that fits each person's situation, privacy and a review step before anything is sent, and showing steps before students know to ask for them.",
+        ],
+      },
+      {
+        heading: 'The pitch',
+        body: [
+          'Moving to New York from abroad means starting a new life while navigating an unfamiliar system. New beginnings, new problems, new challenges. Between classes or work, a different language and family far away, even the basics become complicated.',
+          "Getting a lease, phone, bank account or ID can feel like a catch-22: each requires something you don't have yet. The solutions exist, but they're scattered across websites, forums and group chats. Sometimes it's a matter of not knowing what you don't know.",
+          'Day One brings everything together in a personalized, step-by-step plan, supported by an AI guide that answers questions along the way, tailored to you and your background. So newcomers can spend their first weeks experiencing New York, not struggling to get settled. Build your life starting with Day One.',
+        ],
+      },
+    ],
   },
 ]
 

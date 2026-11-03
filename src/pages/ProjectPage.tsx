@@ -60,7 +60,9 @@ export default function ProjectPage() {
 
       <header className="page-header project-header">
         <div className="eyebrow">
-          {project.role} · {project.year}
+          {(project.label ?? project.role)
+            ? `${project.label ?? project.role} · ${project.year}`
+            : project.year}
         </div>
         <h1>{project.title}</h1>
         <p className="muted">
@@ -84,10 +86,12 @@ export default function ProjectPage() {
         <aside className="project-glance" aria-label="Overview">
           <h2>Overview</h2>
           <dl>
-            <div>
-              <dt>Role</dt>
-              <dd>{project.role}</dd>
-            </div>
+            {project.role && (
+              <div>
+                <dt>Role</dt>
+                <dd>{project.role}</dd>
+              </div>
+            )}
             {glance.team && (
               <div>
                 <dt>Team</dt>
